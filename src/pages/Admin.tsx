@@ -17,7 +17,6 @@ import Rates from './Rates';
 import Loans from './Loans';
 import AboutUs from './AboutUs';
 
-// කිසිම Prop එකක් ගන්නේ නැත (App.tsx එකේ Error එක අයින් වීමට)
 export default function Admin() {
   // Auth & UI States
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -28,8 +27,6 @@ export default function Admin() {
   const [uploading, setUploading] = useState(false);
   const [data, setData] = useState<any[]>([]);
   const [uploadProgress, setUploadProgress] = useState(0); 
-  
-  // සිමියුලේටර් එකට විතරක් වෙනම භාෂාව මෙතන තියාගමු
   const [previewLang, setPreviewLang] = useState<'en' | 'si' | 'ta'>('si');
   
   // Form States
@@ -182,10 +179,10 @@ export default function Admin() {
   }
 
   return (
-    <div className="flex min-h-screen bg-[#f8fafc] font-sans text-slate-900">
+    <div className="flex min-h-screen bg-[#f8fafc] font-sans">
       {/* Sidebar */}
       <aside className="w-72 bg-slate-900 text-white p-6 hidden lg:flex flex-col fixed h-screen z-50">
-        <div className="mb-10 px-4 text-center">
+        <div className="mb-10 px-4">
           <h2 className="text-2xl font-black text-green-500 italic tracking-tighter">SANASA</h2>
           <p className="text-slate-500 font-bold text-[9px] tracking-[0.3em] uppercase mt-1">Denipitiya West</p>
         </div>
@@ -230,11 +227,13 @@ export default function Admin() {
 
             {/* iPhone Frame */}
             <div className="bg-[#0f1115] rounded-[3.5rem] shadow-[0_50px_100px_-20px_rgba(0,0,0,0.3)] flex-1 relative max-w-[450px] mx-auto border-[12px] border-[#1a1c22] overflow-hidden ring-1 ring-slate-800">
+               {/* Notch & Sensors */}
                <div className="absolute top-0 left-1/2 -translate-x-1/2 w-36 h-7 bg-[#1a1c22] rounded-b-[1.5rem] z-[60] flex items-center justify-center gap-3">
                   <div className="w-10 h-1 bg-[#2a2c32] rounded-full" />
                   <div className="w-2.5 h-2.5 bg-[#2a2c32] rounded-full shadow-inner" />
                </div>
                
+               {/* System UI Mock */}
                <div className="absolute top-3 w-full px-10 flex justify-between items-center z-50 text-white/40 font-bold text-[10px]">
                  <span>9:41</span>
                  <div className="flex gap-1.5 items-center">
@@ -242,6 +241,7 @@ export default function Admin() {
                  </div>
                </div>
 
+               {/* Render Pages */}
                <div className="h-full overflow-y-auto bg-white scroll-smooth pt-8">
                  <Home lang={previewLang} onNavigate={() => {}} />
                  <AboutUs lang={previewLang} />
@@ -257,13 +257,16 @@ export default function Admin() {
               <h1 className="text-4xl font-black uppercase italic tracking-tighter text-slate-800 flex items-center gap-3">
                 {activeTab} <ChevronRight size={24} className="text-slate-300" /> <span className="text-green-600">Sync</span>
               </h1>
-              <div className="bg-white px-6 py-3 rounded-2xl shadow-sm border border-slate-100">
-                  <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1">Total Entries</p>
-                  <p className="text-xl font-black text-slate-800 leading-none">{data.length}</p>
+              <div className="flex gap-4">
+                 <div className="bg-white px-6 py-3 rounded-2xl shadow-sm border border-slate-100">
+                    <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-1">Total Entries</p>
+                    <p className="text-xl font-black text-slate-800 leading-none">{data.length}</p>
+                 </div>
               </div>
             </header>
 
             <div className="grid grid-cols-1 gap-8">
+              {/* Form Section */}
               {activeTab === 'gallery' ? (
                 <section className="bg-white p-10 rounded-[2.5rem] shadow-sm border border-slate-100">
                   <div className="grid md:grid-cols-2 gap-5 mb-6">
@@ -311,7 +314,7 @@ export default function Admin() {
                       <tr key={item.id} className="group hover:bg-slate-50 transition-colors">
                         <td className="p-8">
                           <div className="flex items-center gap-5">
-                            {activeTab === 'gallery' && <img src={item.image_url} className="w-16 h-16 rounded-xl object-cover shadow-md" alt="" />}
+                            {activeTab === 'gallery' && <img src={item.image_url} className="w-16 h-16 rounded-xl object-cover shadow-md" />}
                             <div>
                               <p className="font-black text-slate-800 text-lg tracking-tighter uppercase">{item.title || item.period || item.name}</p>
                               <p className="text-slate-400 text-[9px] font-bold uppercase tracking-widest">{item.category || item.description || 'System Entry'}</p>
