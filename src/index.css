@@ -1,0 +1,47 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    -webkit-tap-highlight-color: transparent; /* Mobile වල Click කරද්දී එන නිල් පාට ඉරි අයින් කරයි */
+    scroll-behavior: smooth;
+  }
+  
+  body {
+    @apply antialiased text-slate-900 bg-white; /* අකුරු වඩාත් පැහැදිලි කරයි */
+  }
+}
+
+/* --- Custom Animations --- */
+
+@keyframes glowFade {
+  0%, 100% { 
+    opacity: 0.8; 
+    filter: drop-shadow(0 0 5px rgba(34, 197, 94, 0.4)); 
+    transform: scale(1);
+  }
+  50% { 
+    opacity: 1; 
+    filter: drop-shadow(0 0 20px rgba(34, 197, 94, 0.8)); 
+    transform: scale(1.02); /* පොඩි Pulse එකක් ඇඩ් කළා */
+  }
+}
+
+.animate-glow {
+  animation: glowFade 3s infinite ease-in-out; /* වේගය 3s කළා, එතකොට වඩාත් calm */
+}
+
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.animate-spin-slow {
+  animation: spin-slow 3s linear infinite; /* 2s ට වඩා 3s හොඳයි loading spinner එකකට */
+}
+
+/* --- Glassmorphism Helper --- */
+.glass-effect {
+  @apply bg-white/70 backdrop-blur-xl border border-white/20;
+}

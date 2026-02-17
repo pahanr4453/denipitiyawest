@@ -1,0 +1,53 @@
+.home-btn-primary {
+  @apply bg-white text-green-600 px-8 py-3 rounded-lg font-semibold transition-all duration-200 shadow-lg;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.home-btn-primary::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(34, 197, 94, 0.1);
+  transition: left 0.3s ease;
+  z-index: -1;
+}
+
+.home-btn-primary:hover {
+  @apply bg-green-50 hover:shadow-xl transform hover:-translate-y-1;
+}
+
+.home-btn-primary:hover::before {
+  left: 100%;
+}
+
+.home-btn-secondary {
+  @apply border-2 border-white text-white px-8 py-3 rounded-lg font-semibold transition-all duration-200 shadow-lg;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.home-btn-secondary::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background-color: white;
+  transition: left 0.3s ease;
+  z-index: -1;
+}
+
+.home-btn-secondary:hover {
+  @apply text-green-600 transform hover:-translate-y-1;
+}
+
+.home-btn-secondary:hover::before {
+  left: 100%;
+}

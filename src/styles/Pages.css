@@ -1,0 +1,108 @@
+.page-container {
+  @apply py-16 bg-gradient-to-br from-green-50 to-blue-50 min-h-screen;
+}
+
+.page-header {
+  @apply text-center mb-12;
+}
+
+.page-title {
+  @apply text-5xl font-bold text-gray-800 mb-4;
+}
+
+.page-divider {
+  @apply w-24 h-1 bg-green-600 mx-auto mb-6;
+}
+
+.page-subtitle {
+  @apply text-xl text-gray-600 max-w-3xl mx-auto;
+}
+
+.content-box {
+  @apply bg-white rounded-2xl shadow-xl p-8 md:p-12;
+}
+
+.content-title {
+  @apply text-3xl font-bold text-gray-800 mb-6;
+}
+
+.staff-card {
+  @apply rounded-2xl shadow-xl p-8 text-white transform hover:scale-105 transition-all duration-300;
+}
+
+.staff-card-green {
+  @apply bg-gradient-to-br from-green-600 to-green-700;
+}
+
+.staff-card-blue {
+  @apply bg-gradient-to-br from-blue-600 to-blue-700;
+}
+
+.staff-icon {
+  @apply w-20 h-20 bg-white rounded-full flex items-center justify-center mr-6;
+}
+
+.director-item {
+  @apply border-l-4 border-green-600 bg-gradient-to-r from-green-50 to-white p-6 rounded-lg hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1;
+}
+
+.employee-item {
+  @apply border-l-4 border-blue-600 bg-gradient-to-r from-blue-50 to-white p-6 rounded-lg hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1;
+}
+
+.rate-header {
+  @apply bg-gradient-to-r from-green-600 to-blue-600 px-8 py-6;
+}
+
+.rate-card {
+  @apply relative bg-gradient-to-br from-green-50 to-blue-50 rounded-xl p-8 border-2 border-green-200 hover:border-green-400 transition-all duration-300 transform hover:scale-105 hover:shadow-xl;
+}
+
+.rate-badge {
+  @apply absolute top-0 right-0 bg-green-600 text-white px-4 py-1 rounded-bl-xl rounded-tr-xl font-semibold;
+}
+
+.rate-value {
+  @apply text-5xl font-bold text-green-600 mb-2;
+}
+
+.contact-icon {
+  @apply w-14 h-14 bg-gradient-to-br from-green-600 to-blue-600 text-white rounded-full flex items-center justify-center flex-shrink-0;
+}
+
+.contact-info-item {
+  @apply flex items-start;
+}
+
+.form-input {
+  @apply w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-green-600 focus:outline-none transition-colors;
+}
+
+.form-textarea {
+  @apply w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-green-600 focus:outline-none transition-colors resize-none;
+}
+
+.submit-btn {
+  @apply w-full bg-gradient-to-r from-green-600 to-blue-600 text-white py-4 rounded-lg font-semibold hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1;
+  cursor: pointer;
+}
+
+.cta-box {
+  @apply bg-gradient-to-r from-green-600 to-blue-600 rounded-2xl shadow-xl p-8 md:p-12 text-white text-center;
+}
+
+.process-step {
+  @apply text-center;
+}
+
+.process-number {
+  @apply w-16 h-16 bg-green-600 text-white rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold;
+}
+
+.stat-number {
+  @apply text-5xl font-bold text-green-600 mb-2;
+}
+
+.stat-label {
+  @apply text-gray-600 text-lg;
+}

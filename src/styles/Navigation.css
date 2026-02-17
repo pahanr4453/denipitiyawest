@@ -1,0 +1,45 @@
+.nav-container {
+  @apply bg-white shadow-lg sticky top-0 z-50;
+}
+
+.nav-brand {
+  @apply text-2xl font-bold text-green-700;
+  letter-spacing: -0.5px;
+}
+
+.nav-brand-sub {
+  @apply text-blue-600;
+}
+
+.nav-link {
+  @apply px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200;
+  position: relative;
+}
+
+.nav-link:not(.nav-link-active) {
+  @apply text-gray-700;
+}
+
+.nav-link:not(.nav-link-active):hover {
+  @apply bg-green-50 text-green-600;
+}
+
+.nav-link-active {
+  @apply bg-green-600 text-white shadow-md;
+}
+
+.nav-mobile-menu {
+  @apply md:hidden;
+}
+
+.nav-mobile-item {
+  @apply w-full text-left px-3 py-2 rounded-md text-base font-medium transition-all duration-200;
+}
+
+.nav-mobile-item:not(.nav-mobile-item-active) {
+  @apply text-gray-700 hover:bg-green-50 hover:text-green-600;
+}
+
+.nav-mobile-item-active {
+  @apply bg-green-600 text-white;
+}
