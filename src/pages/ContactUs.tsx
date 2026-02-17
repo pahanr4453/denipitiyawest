@@ -1,165 +1,190 @@
-import React from 'react';
-import { Mail, Phone, Globe, MapPin, Clock, Send, MessageSquare, ArrowRight, Map as MapIcon } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { 
+  Phone, Mail, MapPin, Clock, Send, 
+  MessageSquare, Globe, ArrowUpRight, CheckCircle2 
+} from 'lucide-react';
 import { motion } from 'framer-motion';
 
 const content = {
   en: {
-    heroTag: "Get In Touch",
-    heroTitle: "Contact Us",
-    heroSub: "We're here to help you with all your financial needs. Reach out to our team today.",
-    infoTitle: "Contact Information",
+    heroTitle: "Get in Touch",
+    heroSub: "We're here to help you navigate your financial journey.",
     formTitle: "Send a Message",
-    labels: { name: "Full Name", email: "Email Address", phone: "Phone Number", msg: "Message", sub: "Subject" },
-    btn: "Send Message",
-    visitTitle: "Visit Us Today",
-    visitSub: "We welcome you to visit our main office in Denipitiya. Our staff is ready to assist you.",
-    directions: "Open in Google Maps"
+    infoTitle: "Contact Information",
+    hoursTitle: "Business Hours",
+    statusOpen: "Open Now",
+    statusClosed: "Closed",
+    fields: { name: "Your Name", email: "Email Address", msg: "How can we help?", send: "Send Message" }
   },
   si: {
-    heroTag: "සම්බන්ධ වන්න",
-    heroTitle: "අප අමතන්න",
-    heroSub: "ඔබේ සියලුම මූල්‍ය අවශ්‍යතා සඳහා අප සූදානම්. අදම අපගේ කණ්ඩායම හා සම්බන්ධ වන්න.",
-    infoTitle: "සම්බන්ධතා විස්තර",
-    formTitle: "පණිවිඩයක් එවන්න",
-    labels: { name: "සම්පූර්ණ නම", email: "විද්‍යුත් තැපෑල", phone: "දුරකථන අංකය", msg: "පණිවිඩය", sub: "විෂය" },
-    btn: "පණිවිඩය එවන්න",
-    visitTitle: "අදම පැමිණෙන්න",
-    visitSub: "දෙණිපිටිය පිහිටි අපගේ ප්‍රධාන කාර්යාලයට පැමිණෙන්න. අපගේ කාර්ය මණ්ඩලය ඔබව සාදරයෙන් පිළිගනී.",
-    directions: "ගූගල් මැප්ස් හරහා බලන්න"
+    heroTitle: "අපව අමතන්න",
+    heroSub: "ඔබේ මූල්‍ය ගමන සාර්ථක කරගැනීමට අපි සැමවිටම සූදානම්.",
+    formTitle: "පණිවිඩයක් යොමු කරන්න",
+    infoTitle: "සම්බන්ධීකරණ තොරතුරු",
+    hoursTitle: "සේවා කාලය",
+    statusOpen: "දැන් විවෘතයි",
+    statusClosed: "දැන් වසා ඇත",
+    fields: { name: "ඔබේ නම", email: "ඊමේල් ලිපිනය", msg: "අපෙන් විය යුතු සේවාව?", send: "පණිවිඩය යවන්න" }
   }
 };
 
-export default function ContactUs({ lang = 'si' }: { lang?: 'si' | 'en' | 'ta' }) {
+export default function Contact({ lang = 'si' }: { lang?: 'si' | 'en' | 'ta' }) {
   const t = content[lang as keyof typeof content] || content.si;
+  const [isSubmitted, setIsSubmitted] = useState(false);
+
+  // සරලව ශාඛාව විවෘතද කියලා බලන Logic එක (9 AM - 4 PM)
+  const [isOpen, setIsOpen] = useState(false);
+  useEffect(() => {
+    const hour = new Date().getHours();
+    setIsOpen(hour >= 9 && hour < 16);
+  }, []);
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitted(true);
+    setTimeout(() => setIsSubmitted(false), 3000);
+  };
 
   return (
-    <div className="py-24 bg-[#fcfdfe] min-h-screen">
-      <div className="max-w-7xl mx-auto px-6">
-        
-        {/* --- Hero Section --- */}
-        <div className="text-center mb-24">
+    <div className="min-h-screen bg-white dark:bg-[#020617] transition-all duration-1000 pb-40">
+      
+      {/* --- HERO SECTION --- */}
+      <section className="relative pt-32 pb-20 px-6 overflow-hidden">
+        <div className="max-w-7xl mx-auto text-center relative z-10">
           <motion.div 
-            initial={{ opacity: 0, y: 10 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            className="inline-flex items-center gap-2 bg-green-100 text-green-700 px-5 py-2 rounded-full text-[10px] font-black uppercase tracking-[0.3em] mb-6"
+            initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }}
+            className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-slate-900 dark:bg-white/5 text-white text-[10px] font-black uppercase tracking-[0.3em] mb-10"
           >
-            <MessageSquare size={14} /> {t.heroTag}
+            <Globe size={14} className="text-green-500" /> Connect With Us
           </motion.div>
-          <h1 className="text-6xl md:text-8xl font-black text-slate-900 mb-6 italic uppercase tracking-tighter">
+          
+          <h1 className="text-7xl md:text-9xl font-black tracking-tighter uppercase italic leading-[0.8] dark:text-white">
             {t.heroTitle}<span className="text-green-600">.</span>
           </h1>
-          <p className="text-lg text-slate-500 max-w-2xl mx-auto font-medium leading-relaxed">
+          
+          <p className="mt-10 text-xl text-slate-500 dark:text-slate-400 max-w-xl mx-auto font-medium leading-relaxed">
             {t.heroSub}
           </p>
         </div>
+      </section>
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 mb-24">
+      {/* --- CONTACT GRID --- */}
+      <section className="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-12 gap-12 mt-10">
+        
+        {/* LEFT: Info & Details (5 Columns) */}
+        <div className="lg:col-span-5 space-y-8">
           
-          {/* --- Contact Info Grid --- */}
-          <div className="lg:col-span-5 space-y-10">
-            <h2 className="text-3xl font-black text-slate-900 italic uppercase tracking-tighter mb-8">{t.infoTitle}</h2>
-            
-            <div className="space-y-8">
-              <ContactCard 
-                icon={<Mail />} 
-                title="Email" 
-                value="info@denipitiyawest.lk" 
-                sub="Send us an email anytime"
-                link="mailto:info@denipitiyawest.lk"
-              />
-              <ContactCard 
-                icon={<Phone />} 
-                title="Phone" 
-                value="+94 412252003" 
-                sub="Call us during business hours"
-                link="tel:+94412252003"
-              />
-              <ContactCard 
-                icon={<MapPin />} 
-                title="Address" 
-                value="Denipitiya West SANASA Society, Welihinda, Matara." 
-                sub="Visit our main office"
-              />
-              <ContactCard 
-                icon={<Clock />} 
-                title="Hours" 
-                value="Mon - Fri: 8:30 AM - 4:30 PM" 
-                sub="Sat: 8:30 AM - 12:30 PM"
-              />
-            </div>
+          {/* Status Badge */}
+          <div className={`inline-flex items-center gap-3 px-6 py-3 rounded-2xl font-black uppercase text-[10px] tracking-widest ${isOpen ? 'bg-green-500/10 text-green-600' : 'bg-red-500/10 text-red-600'}`}>
+            <div className={`w-2 h-2 rounded-full animate-pulse ${isOpen ? 'bg-green-600' : 'bg-red-600'}`} />
+            {isOpen ? t.statusOpen : t.statusClosed}
           </div>
 
-          {/* --- Contact Form --- */}
-          <motion.div 
-            initial={{ opacity: 0, x: 20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            className="lg:col-span-7 bg-white rounded-[3rem] shadow-2xl shadow-slate-200/50 p-10 md:p-16 border border-slate-100 relative overflow-hidden"
-          >
-            <div className="absolute top-0 right-0 w-40 h-40 bg-green-50 rounded-full blur-3xl -mr-20 -mt-20 opacity-50" />
-            
-            <h2 className="text-3xl font-black text-slate-900 italic uppercase tracking-tighter mb-10">{t.formTitle}</h2>
-            
-            <form className="grid grid-cols-1 md:grid-cols-2 gap-8 relative z-10">
-              <div className="space-y-2">
-                <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-2">{t.labels.name}</label>
-                <input type="text" className="w-full bg-slate-50 border-none rounded-2xl px-6 py-4 focus:ring-2 focus:ring-green-500 transition-all font-bold text-slate-700" placeholder="John Doe" />
+          <div className="grid grid-cols-1 gap-4">
+            <ContactCard icon={<Phone />} label="Phone" value="+94 41 222 3344" href="tel:+94412223344" />
+            <ContactCard icon={<Mail />} label="Email" value="info@denipitiyasanasa.lk" href="mailto:info@denipitiyasanasa.lk" />
+            <ContactCard icon={<MapPin />} label="Address" value="Main Street, Denipitiya, Sri Lanka" href="#" />
+          </div>
+
+          {/* Business Hours Card */}
+          <div className="p-10 rounded-[3rem] bg-slate-900 text-white relative overflow-hidden group">
+            <Clock className="absolute -right-4 -top-4 w-32 h-32 text-white/5 rotate-12" />
+            <h4 className="text-xl font-black uppercase italic tracking-tighter mb-6 flex items-center gap-3">
+              <Clock size={20} className="text-green-500" /> {t.hoursTitle}
+            </h4>
+            <div className="space-y-4 text-sm font-bold text-slate-400 uppercase tracking-widest">
+              <div className="flex justify-between border-b border-white/5 pb-2">
+                <span>Mon - Fri</span> <span className="text-white text-right">09:00 AM - 04:00 PM</span>
+              </div>
+              <div className="flex justify-between border-b border-white/5 pb-2">
+                <span>Saturday</span> <span className="text-white text-right">09:00 AM - 01:00 PM</span>
+              </div>
+              <div className="flex justify-between text-red-500">
+                <span>Sunday</span> <span className="text-right italic underline">Closed</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* RIGHT: Contact Form (7 Columns) */}
+        <div className="lg:col-span-7">
+          <div className="p-8 md:p-16 rounded-[4rem] bg-slate-50 dark:bg-white/[0.02] border border-slate-100 dark:border-white/5 relative overflow-hidden">
+            <h3 className="text-4xl font-black tracking-tighter uppercase italic dark:text-white mb-10 flex items-center gap-4">
+               {t.formTitle} <MessageSquare size={28} className="text-green-600" />
+            </h3>
+
+            <form onSubmit={handleSubmit} className="space-y-6 relative z-10">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <InputGroup label={t.fields.name} type="text" placeholder="John Doe" />
+                <InputGroup label={t.fields.email} type="email" placeholder="john@example.com" />
               </div>
               <div className="space-y-2">
-                <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-2">{t.labels.email}</label>
-                <input type="email" className="w-full bg-slate-50 border-none rounded-2xl px-6 py-4 focus:ring-2 focus:ring-green-500 transition-all font-bold text-slate-700" placeholder="john@example.com" />
+                <label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 ml-4">{t.fields.msg}</label>
+                <textarea 
+                  rows={4} 
+                  className="w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-white/10 rounded-[2rem] px-8 py-6 text-slate-900 dark:text-white focus:outline-none focus:border-green-500 transition-all resize-none font-medium"
+                  placeholder="..."
+                />
               </div>
-              <div className="md:col-span-2 space-y-2">
-                <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-2">{t.labels.sub}</label>
-                <input type="text" className="w-full bg-slate-50 border-none rounded-2xl px-6 py-4 focus:ring-2 focus:ring-green-500 transition-all font-bold text-slate-700" placeholder="Business Inquiry" />
-              </div>
-              <div className="md:col-span-2 space-y-2">
-                <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-2">{t.labels.msg}</label>
-                <textarea rows={4} className="w-full bg-slate-50 border-none rounded-2xl px-6 py-4 focus:ring-2 focus:ring-green-500 transition-all font-bold text-slate-700 resize-none" placeholder="Your message here..." />
-              </div>
-              
-              <button className="md:col-span-2 bg-slate-900 text-white py-5 rounded-2xl font-black uppercase text-xs tracking-[0.2em] hover:bg-green-600 transition-all flex items-center justify-center gap-3 shadow-xl group">
-                {t.btn} <Send size={18} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+
+              <button 
+                disabled={isSubmitted}
+                className={`w-full py-7 rounded-[2.5rem] font-black uppercase text-[11px] tracking-[0.3em] transition-all flex items-center justify-center gap-3 shadow-2xl ${isSubmitted ? 'bg-green-600 text-white' : 'bg-slate-900 dark:bg-green-600 text-white hover:scale-[1.02]'}`}
+              >
+                {isSubmitted ? <><CheckCircle2 size={18} /> Success</> : <>{t.fields.send} <Send size={16} /> </>}
               </button>
             </form>
-          </motion.div>
+          </div>
         </div>
+      </section>
 
-        {/* --- Footer CTA / Map --- */}
-        <div className="bg-slate-900 rounded-[4rem] p-12 md:p-20 relative overflow-hidden text-center md:text-left flex flex-col md:flex-row items-center justify-between gap-10">
-          <div className="relative z-10 max-w-2xl">
-            <h2 className="text-4xl md:text-5xl font-black text-white italic uppercase tracking-tighter mb-6">{t.visitTitle}</h2>
-            <p className="text-slate-400 font-medium text-lg mb-8 leading-relaxed">
-              {t.visitSub}
-            </p>
-            <button className="bg-white text-slate-900 px-10 py-5 rounded-2xl font-black uppercase text-xs tracking-widest hover:bg-green-500 hover:text-white transition-all flex items-center gap-3 mx-auto md:mx-0">
-              <MapIcon size={18} /> {t.directions}
-            </button>
-          </div>
-          <div className="relative z-10 w-full md:w-auto">
-            <div className="w-full md:w-80 h-80 bg-white/5 rounded-[3rem] border border-white/10 flex items-center justify-center group cursor-pointer hover:bg-white/10 transition-all">
-               <MapPin size={80} className="text-green-500 animate-bounce" />
-            </div>
-          </div>
-          {/* Decorative Circles */}
-          <div className="absolute top-0 right-0 w-96 h-96 bg-green-600/20 rounded-full blur-[120px] -mr-40 -mt-40" />
+      {/* --- MAP SECTION --- */}
+      <section className="max-w-7xl mx-auto px-6 mt-24">
+        <div className="h-[500px] w-full bg-slate-100 dark:bg-white/5 rounded-[4rem] overflow-hidden border border-slate-200 dark:border-white/10 relative group">
+           {/* Placeholder for Map - මෙතනට Google Map Iframe එක දාන්න පුළුවන් */}
+           <div className="absolute inset-0 flex items-center justify-center text-slate-300 dark:text-slate-700 font-black uppercase tracking-[1em] italic text-4xl">
+              Location Map
+           </div>
+           <iframe 
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15872.2345!2d80.4433!3d5.9544" 
+              className="w-full h-full grayscale-[100%] contrast-[1.2] invert-[0] dark:invert-[0.9] opacity-50 group-hover:opacity-100 group-hover:grayscale-0 transition-all duration-1000"
+              style={{ border: 0 }} 
+              allowFullScreen 
+              loading="lazy" 
+           />
         </div>
-      </div>
+      </section>
     </div>
   );
 }
 
-function ContactCard({ icon, title, value, sub, link }: any) {
-  const Wrapper = link ? 'a' : 'div';
+// UI Components for the page
+function ContactCard({ icon, label, value, href }: { icon: any, label: string, value: string, href: string }) {
   return (
-    <Wrapper href={link} className="flex items-center group cursor-pointer">
-      <div className="w-16 h-16 bg-white shadow-xl shadow-slate-200/50 rounded-2xl flex items-center justify-center text-slate-900 group-hover:bg-green-600 group-hover:text-white transition-all duration-500">
-        {React.cloneElement(icon, { size: 28 })}
+    <a href={href} className="group p-8 rounded-[2.5rem] bg-white dark:bg-white/5 border border-slate-100 dark:border-white/5 hover:border-green-500 transition-all flex items-center justify-between shadow-sm">
+      <div className="flex items-center gap-6">
+        <div className="w-14 h-14 bg-slate-50 dark:bg-slate-900 text-green-600 rounded-2xl flex items-center justify-center group-hover:bg-green-600 group-hover:text-white transition-all">
+          {icon}
+        </div>
+        <div>
+          <p className="text-[9px] font-black uppercase tracking-widest text-slate-400 mb-1">{label}</p>
+          <p className="text-lg font-black text-slate-900 dark:text-white tracking-tighter italic">{value}</p>
+        </div>
       </div>
-      <div className="ml-6">
-        <p className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-1">{title}</p>
-        <h4 className="text-xl font-bold text-slate-900 leading-tight group-hover:text-green-600 transition-colors">{value}</h4>
-        <p className="text-sm text-slate-500 font-medium mt-1">{sub}</p>
-      </div>
-    </Wrapper>
+      <ArrowUpRight className="text-slate-300 group-hover:text-green-600 transition-all" />
+    </a>
+  );
+}
+
+function InputGroup({ label, type, placeholder }: { label: string, type: string, placeholder: string }) {
+  return (
+    <div className="space-y-2">
+      <label className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 ml-4">{label}</label>
+      <input 
+        type={type} 
+        placeholder={placeholder}
+        className="w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-white/10 rounded-full px-8 py-5 text-slate-900 dark:text-white focus:outline-none focus:border-green-500 transition-all font-medium"
+      />
+    </div>
   );
 }
