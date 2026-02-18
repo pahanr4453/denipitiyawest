@@ -33,6 +33,15 @@ const content = {
     drag: "තවත් බැලීමට",
     empty: "ඡායාරූප කිසිවක් හමු නොවීය",
     loading: "ඡායාරූප පූරණය වෙමින් පවතී..."
+  },
+  ta: {
+    museum: "புகைப்படக்கூடம்",
+    archive: "காட்சி காப்பகம்",
+    exhibits: "புகைப்படங்கள்",
+    viewBtn: "பார்க்க",
+    drag: "பார்க்க நகர்த்தவும்",
+    empty: "புகைப்படங்கள் எதுவும் இல்லை",
+    loading: "புகைப்படங்கள் பதிவேற்றப்படுகின்றன..."
   }
 };
 
@@ -42,6 +51,7 @@ export default function Gallery({ lang = 'si' }: { lang?: 'si' | 'en' | 'ta' }) 
   const [loading, setLoading] = useState(true);
   const [selectedImage, setSelectedImage] = useState<{cat: string, index: number} | null>(null);
 
+  const isTamil = lang === 'ta';
   const t = content[lang as keyof typeof content] || content.si;
 
   useEffect(() => { fetchPhotos(); }, []);
@@ -97,7 +107,7 @@ export default function Gallery({ lang = 'si' }: { lang?: 'si' | 'en' | 'ta' }) 
           {t.archive}
         </motion.div>
         
-        <h2 className="text-7xl md:text-9xl font-black text-slate-900 dark:text-white italic uppercase tracking-tighter leading-[0.8] mb-12">
+        <h2 className={`${isTamil ? 'text-6xl md:text-8xl' : 'text-7xl md:text-9xl'} font-black text-slate-900 dark:text-white italic uppercase tracking-tighter leading-[0.8] mb-12`}>
           PHOTO <br /> <span className="text-green-600">{t.museum}</span>
         </h2>
       </header>
@@ -116,7 +126,7 @@ export default function Gallery({ lang = 'si' }: { lang?: 'si' | 'en' | 'ta' }) 
                 <div className="flex flex-col md:flex-row md:items-end gap-6 mb-12">
                   <div className="flex items-baseline gap-4">
                     <span className="text-7xl font-black text-slate-100 dark:text-white/5 italic leading-none">0{albumIdx + 1}</span>
-                    <h3 className="text-4xl font-black text-slate-900 dark:text-white uppercase italic tracking-tighter">{category}</h3>
+                    <h3 className={`${isTamil ? 'text-3xl' : 'text-4xl'} font-black text-slate-900 dark:text-white uppercase italic tracking-tighter`}>{category}</h3>
                   </div>
                   <div className="flex-1 h-[1px] bg-slate-200 dark:bg-white/10 mb-4 hidden md:block" />
                   <div className="flex items-center gap-3 bg-slate-900 dark:bg-green-600 text-white px-6 py-3 rounded-2xl shadow-xl self-start">
@@ -139,23 +149,24 @@ export default function Gallery({ lang = 'si' }: { lang?: 'si' | 'en' | 'ta' }) 
                           src={photo.image_url} 
                           alt={photo.title}
                           className="w-full h-full object-cover transition-transform duration-[2s] group-hover:scale-110 grayscale-[40%] group-hover:grayscale-0"
+                          loading="lazy"
                         />
                         
                         {/* Overlay Information */}
                         <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500 flex flex-col justify-end p-12">
-                           <div className="translate-y-4 group-hover:translate-y-0 transition-all duration-500">
+                            <div className="translate-y-4 group-hover:translate-y-0 transition-all duration-500">
                               <p className="text-green-500 font-black text-[9px] uppercase tracking-[0.4em] mb-3">{t.viewBtn}</p>
-                              <h4 className="text-white text-4xl font-black uppercase italic tracking-tighter leading-tight mb-4">{photo.title}</h4>
+                              <h4 className={`${isTamil ? 'text-3xl' : 'text-4xl'} text-white font-black uppercase italic tracking-tighter leading-tight mb-4`}>{photo.title}</h4>
                               <div className="flex items-center gap-4 text-white/40 text-[10px] font-black uppercase tracking-widest">
                                 <Calendar size={14} className="text-green-500" /> 
-                                {new Date(photo.created_at).toLocaleDateString(lang === 'si' ? 'si-LK' : 'en-GB')}
+                                {new Date(photo.created_at).toLocaleDateString(lang === 'si' ? 'si-LK' : lang === 'ta' ? 'ta-LK' : 'en-GB')}
                               </div>
-                           </div>
+                            </div>
                         </div>
 
                         {/* Centered Icon on Hover */}
                         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-20 h-20 bg-white/10 backdrop-blur-2xl rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 scale-50 group-hover:scale-100 transition-all duration-500 border border-white/20">
-                           <Maximize2 className="text-white" size={28} strokeWidth={1.5} />
+                            <Maximize2 className="text-white" size={28} strokeWidth={1.5} />
                         </div>
                       </motion.div>
                     ))}
@@ -172,14 +183,13 @@ export default function Gallery({ lang = 'si' }: { lang?: 'si' | 'en' | 'ta' }) 
         )}
       </main>
 
-      {/* --- ENHANCED LIGHTBOX --- */}
+      {/* --- LIGHTBOX --- */}
       <AnimatePresence>
         {selectedImage !== null && (
           <motion.div 
             initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
             className="fixed inset-0 z-[100] bg-white/95 dark:bg-slate-950/98 flex items-center justify-center p-6 backdrop-blur-3xl"
           >
-            {/* Close UI */}
             <button 
               onClick={() => setSelectedImage(null)} 
               className="absolute top-10 right-10 text-slate-900 dark:text-white/40 hover:text-green-600 dark:hover:text-white p-4 z-[110] transition-colors"
@@ -187,7 +197,6 @@ export default function Gallery({ lang = 'si' }: { lang?: 'si' | 'en' | 'ta' }) 
               <X size={40} strokeWidth={1} />
             </button>
 
-            {/* Navigation Controls */}
             <div className="absolute inset-x-4 md:inset-x-12 flex justify-between items-center z-[105] pointer-events-none">
               <button onClick={() => navigate(-1)} className="pointer-events-auto p-6 text-slate-900 dark:text-white/20 hover:text-green-600 dark:hover:text-green-500 transition-all bg-slate-100 dark:bg-white/5 rounded-full border border-slate-200 dark:border-white/10 group">
                 <ChevronLeft size={48} strokeWidth={1} className="group-hover:-translate-x-1 transition-transform" />
@@ -197,7 +206,6 @@ export default function Gallery({ lang = 'si' }: { lang?: 'si' | 'en' | 'ta' }) 
               </button>
             </div>
 
-            {/* Content Container */}
             <div className="max-w-7xl w-full flex flex-col items-center">
               <motion.div 
                 layoutId={`img-${groupedPhotos[selectedImage.cat][selectedImage.index].id}`}
@@ -216,7 +224,7 @@ export default function Gallery({ lang = 'si' }: { lang?: 'si' | 'en' | 'ta' }) 
                 <span className="text-green-600 font-black text-xs tracking-[0.6em] uppercase mb-4 block">
                   {selectedImage.cat} — {selectedImage.index + 1}/{groupedPhotos[selectedImage.cat].length}
                 </span>
-                <h4 className="text-4xl md:text-6xl text-slate-900 dark:text-white font-black italic uppercase tracking-tighter leading-tight">
+                <h4 className={`${isTamil ? 'text-3xl md:text-5xl' : 'text-4xl md:text-6xl'} text-slate-900 dark:text-white font-black italic uppercase tracking-tighter leading-tight`}>
                   {groupedPhotos[selectedImage.cat][selectedImage.index].title}
                 </h4>
               </motion.div>

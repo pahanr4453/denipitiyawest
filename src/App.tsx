@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from 'react';
-import { motion, AnimatePresence } from 'framer-motion'; 
+import { motion, AnimatePresence, useScroll, useMotionValueEvent } from 'framer-motion'; 
 import { 
   Moon, 
   Sun, 
@@ -14,7 +14,10 @@ import {
   Lock, 
   Globe, 
   ExternalLink, 
-  Layout
+  Layout,
+  FileText,
+  ShieldAlert,
+  Cookie
 } from 'lucide-react'; 
 
 // --- TYPES & INTERFACES ---
@@ -68,6 +71,68 @@ const dictionary: Dictionary = {
   }
 };
 
+// --- INTERNAL LEGAL COMPONENT (Premium Content) ---
+const LegalView = ({ type, darkMode }: { type: string, darkMode: boolean }) => {
+  const data = {
+    terms: { 
+      title: "Terms & Conditions", 
+      icon: <FileText size={48} />, 
+      content: "These terms govern the use of Denipitiya West Sanasa's digital portal. Users are expected to maintain account security and report any unauthorized access. All services are subject to the financial regulations of the Central Bank of Sri Lanka." 
+    },
+    privacy: { 
+      title: "Privacy Policy", 
+      icon: <ShieldAlert size={48} />, 
+      content: "We prioritize your data sovereignty. Personal identification and financial records are stored using AES-256 bit encryption. We do not sell or share user data with third-party marketing agencies." 
+    },
+    cookies: { 
+      title: "Cookie Policy", 
+      icon: <Cookie size={48} />, 
+      content: "Our system uses 'Strictly Necessary' cookies to manage secure login sessions. No tracking or advertising cookies are utilized without explicit user consent. You can manage your preferences via your browser settings." 
+    },
+    fraud: { 
+      title: "Anti-Fraud Policy", 
+      icon: <ShieldCheck size={48} />, 
+      content: "Our AI-driven security infrastructure monitors for suspicious transaction patterns. Users are advised never to share OTPs or passwords via telephone or email." 
+    }
+  }[type] || { title: "Documentation", icon: <Lock size={48} />, content: "Please select a valid legal document from the footer menu." };
+
+  return (
+    <div className="max-w-5xl mx-auto px-10 py-24">
+      <motion.div 
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        className={`relative overflow-hidden p-16 rounded-[4rem] border transition-all duration-700 ${
+          darkMode ? 'bg-slate-900/40 border-white/10' : 'bg-white border-slate-200 shadow-2xl shadow-slate-200/50'
+        }`}
+      >
+        <div className="absolute top-0 right-0 p-10 opacity-10 text-green-500 transform rotate-12 scale-150">
+          {data.icon}
+        </div>
+        <div className="relative z-10">
+          <div className="flex items-center gap-6 mb-12">
+            <div className="w-16 h-16 bg-green-500/10 rounded-2xl flex items-center justify-center text-green-500 shadow-inner">
+              {data.icon}
+            </div>
+            <div>
+              <h1 className="text-5xl font-black italic uppercase tracking-tighter leading-none">{data.title}</h1>
+              <div className="h-1 w-24 bg-green-500 mt-4 rounded-full" />
+            </div>
+          </div>
+          <div className={`text-xl leading-relaxed opacity-70 mb-12 max-w-3xl ${darkMode ? 'text-slate-300' : 'text-slate-600'}`}>
+            {data.content}
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 opacity-40 text-sm italic font-medium">
+             <p className="flex gap-3 items-center"><Shield size={14} className="text-green-500" /> Enterprise-grade data protection</p>
+             <p className="flex gap-3 items-center"><Zap size={14} className="text-green-500" /> Real-time security monitoring</p>
+             <p className="flex gap-3 items-center"><Globe size={14} className="text-green-500" /> Compliance with local regulations</p>
+             <p className="flex gap-3 items-center"><Activity size={14} className="text-green-500" /> Continuous infrastructure auditing</p>
+          </div>
+        </div>
+      </motion.div>
+    </div>
+  );
+};
+
 export default function App() {
   // --- STATES ---
   const [currentPage, setCurrentPage] = useState<string>('home');
@@ -76,11 +141,27 @@ export default function App() {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [scrollPerc, setScrollPerc] = useState<number>(0);
   const [isHovered, setIsHovered] = useState<boolean>(false);
+  const [isButtonsVisible, setIsButtonsVisible] = useState(true);
+  const [navHidden, setNavHidden] = useState(false);
+  
+  const { scrollY } = useScroll();
+
+  // --- SCROLL HIDE LOGIC FOR NAV & SIDE BUTTONS ---
+  useMotionValueEvent(scrollY, "change", (latest) => {
+    const previous = scrollY.getPrevious() ?? 0;
+    // Hide Navigation & Side Buttons on scroll down
+    if (latest > previous && latest > 150) {
+      setNavHidden(true);
+      setIsButtonsVisible(false);
+    } else {
+      setNavHidden(false);
+      setIsButtonsVisible(true);
+    }
+  });
 
   // --- ADMIN SHORTCUT LOGIC ---
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      // Shortcut: CTRL + SHIFT + A
       if (e.ctrlKey && e.shiftKey && e.key === 'A') {
         navigateTo('admin');
       }
@@ -130,7 +211,7 @@ export default function App() {
       
       <AnimatePresence mode="wait">
         {isLoading ? (
-          /* --- FULL SCREEN PREMIUM LOADER --- */
+          /* --- FULL SCREEN PREMIUM LOADER (UNTOUCHED & REFINED) --- */
           <motion.div 
             key="loader"
             initial={{ opacity: 1 }}
@@ -204,19 +285,31 @@ export default function App() {
                   style={{ width: `${scrollPerc}%` }}
                 />
                 
-                <Navigation 
-                  currentPage={currentPage} 
-                  setCurrentPage={navigateTo} 
-                  lang={lang} 
-                  setLang={setLang} 
-                  darkMode={darkMode} 
-                  setDarkMode={setDarkMode} 
-                />
+                {/* --- NAVIGATION WITH HIDE LOGIC --- */}
+                <motion.div
+                  animate={{ y: navHidden ? "-100%" : 0 }}
+                  transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+                  className="fixed top-0 left-0 right-0 z-[9999]"
+                >
+                  <Navigation 
+                    currentPage={currentPage} 
+                    setCurrentPage={navigateTo} 
+                    lang={lang} 
+                    setLang={setLang} 
+                    darkMode={darkMode} 
+                    setDarkMode={setDarkMode} 
+                  />
+                </motion.div>
               </>
             )}
 
+            {/* --- SIDE BUTTONS WITH HIDE LOGIC --- */}
             {!isAdminPage && (
-              <div className="fixed bottom-10 right-10 z-[1000] flex flex-col gap-5">
+              <motion.div 
+                animate={{ x: isButtonsVisible ? 0 : 100, opacity: isButtonsVisible ? 1 : 0 }}
+                transition={{ duration: 0.5, ease: "circOut" }}
+                className="fixed bottom-10 right-10 z-[1000] flex flex-col gap-5"
+              >
                 <AnimatePresence>
                   {scrollPerc > 15 && (
                     <motion.button 
@@ -224,7 +317,7 @@ export default function App() {
                       animate={{ scale: 1, x: 0 }} 
                       exit={{ scale: 0, x: 20 }} 
                       onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} 
-                      className="w-14 h-14 bg-green-600 text-white rounded-full shadow-2xl flex items-center justify-center hover:bg-green-500 hover:-translate-y-1 transition-all active:scale-90"
+                      className="w-14 h-14 bg-green-600 text-white rounded-full shadow-2xl flex items-center justify-center hover:bg-green-500 hover:-translate-y-1 transition-all active:scale-90 shadow-green-900/40"
                     >
                       <ArrowUpCircle size={26} />
                     </motion.button>
@@ -237,7 +330,7 @@ export default function App() {
                   className={`w-14 h-14 shadow-2xl rounded-full flex items-center justify-center border transition-all duration-500 ${
                     darkMode 
                     ? 'bg-slate-900 border-white/10 text-yellow-400 shadow-yellow-500/10' 
-                    : 'bg-white border-slate-200 text-slate-600 shadow-xl'
+                    : 'bg-white border-slate-200 text-slate-600 shadow-xl shadow-slate-200'
                   }`}
                 >
                   {darkMode ? <Sun size={24} /> : <Moon size={24} />}
@@ -254,7 +347,7 @@ export default function App() {
                       onClick={() => setLang(l)} 
                       className={`w-11 h-11 rounded-full text-[10px] font-black transition-all flex items-center justify-center ${
                         lang === l 
-                        ? 'bg-green-600 text-white shadow-lg' 
+                        ? 'bg-green-600 text-white shadow-lg shadow-green-900/20' 
                         : 'text-slate-500 hover:text-green-500'
                       }`}
                     >
@@ -262,7 +355,7 @@ export default function App() {
                     </button>
                   ))}
                 </div>
-              </div>
+              </motion.div>
             )}
 
             <main className={isAdminPage ? "min-h-screen" : "pt-28 min-h-screen"}>
@@ -282,11 +375,16 @@ export default function App() {
                   {currentPage === 'gallery' && <Gallery lang={lang} />}
                   {currentPage === 'contact' && <ContactUs lang={lang} />}
                   {currentPage === 'admin' && <Admin />}
+                  {/* --- NEW LEGAL PAGES --- */}
+                  {['terms', 'privacy', 'cookies', 'fraud'].includes(currentPage) && (
+                    <LegalView type={currentPage} darkMode={darkMode} />
+                  )}
                 </motion.div>
               </AnimatePresence>
             </main>
 
             {!isAdminPage && (
+              /* --- FOOTER (UNTOUCHED PREMIUM STYLE) --- */
               <footer className={`pt-40 pb-16 relative overflow-hidden transition-all duration-1000 ${
                 darkMode ? 'bg-[#01040a] text-white border-t border-white/5' : 'bg-slate-50 text-slate-900 border-t border-slate-200'
               }`}>
@@ -322,10 +420,19 @@ export default function App() {
                         <Lock size={16} /> Legal & Compliance
                       </h4>
                       <ul className="space-y-5">
-                        {['Terms & Conditions', 'Privacy Policy', 'Cookie Policy', 'Anti-Fraud Policy'].map((item) => (
-                          <li key={item} className="group flex items-center gap-4 text-xs font-bold opacity-40 hover:opacity-100 cursor-pointer transition-all duration-300">
+                        {[
+                          { name: 'Terms & Conditions', id: 'terms' },
+                          { name: 'Privacy Policy', id: 'privacy' },
+                          { name: 'Cookie Policy', id: 'cookies' },
+                          { name: 'Anti-Fraud Policy', id: 'fraud' }
+                        ].map((item) => (
+                          <li 
+                            key={item.id} 
+                            onClick={() => navigateTo(item.id)}
+                            className="group flex items-center gap-4 text-xs font-bold opacity-40 hover:opacity-100 cursor-pointer transition-all duration-300"
+                          >
                             <span className="w-1.5 h-1.5 rounded-full bg-green-600 scale-0 group-hover:scale-100 transition-transform" />
-                            {item}
+                            {item.name}
                           </li>
                         ))}
                       </ul>
@@ -336,7 +443,7 @@ export default function App() {
                         <Cpu size={16} /> System Infrastructure
                       </h4>
                       <div className={`p-8 rounded-[2.5rem] border ${
-                        darkMode ? 'bg-white/[0.02] border-white/5' : 'bg-white border-slate-200 shadow-2xl shadow-slate-200'
+                        darkMode ? 'bg-white/[0.02] border-white/5' : 'bg-white border-slate-200 shadow-2xl'
                       }`}>
                          <div className="flex items-center gap-4 mb-6">
                             <div className="w-12 h-12 bg-green-500/10 rounded-2xl flex items-center justify-center text-green-500 shadow-inner">
@@ -366,17 +473,14 @@ export default function App() {
                          <p className="text-[10px] font-bold uppercase tracking-[0.4em] italic">V2.4.0 Deployment Package</p>
                       </div>
                       
-                      {/* SECRET DOUBLE CLICK ACCESS */}
-                      <div 
-                        onDoubleClick={() => navigateTo('admin')}
-                        className="cursor-pointer select-none"
-                      >
+                      <div onDoubleClick={() => navigateTo('admin')} className="cursor-pointer select-none">
                         <p className="text-[10px] font-bold uppercase tracking-[0.3em] opacity-30 italic hover:opacity-100 transition-opacity">
                           © 2026 {t.brand}. {t.rights}
                         </p>
                       </div>
                     </div>
 
+                    {/* --- ARCHITECTED BY SENESH PAHAN (LAYOUT SAVED) --- */}
                     <motion.div 
                         onMouseEnter={() => setIsHovered(true)}
                         onMouseLeave={() => setIsHovered(false)}

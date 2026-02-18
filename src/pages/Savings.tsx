@@ -37,12 +37,27 @@ const content = {
       { t: "නම්‍යශීලී බව", d: "ඕනෑම වෙලාවක මුදල් ලබාගැනීම" },
       { t: "ගාස්තු රහිතයි", d: "සැඟවුණු ගාස්තු කිසිවක් නැත" }
     ]
+  },
+  ta: {
+    heroTitle: "புத்திசாலித்தனமான சேமிப்பு",
+    heroSub: "உங்கள் நிதி சுதந்திரத்தின் அடித்தளம் இங்கே தொடங்குகிறது",
+    benefitsHeading: "கணக்கு நன்மைகள்",
+    ctaBtn: "கணக்கைத் தொடங்கவும்",
+    whyTitle: "ஏன் எங்களுடன் சேமிக்க வேண்டும்?",
+    info: [
+      { t: "சிறந்த வட்டி", d: "சந்தையில் முன்னணியில் உள்ள வட்டி விகிதம்" },
+      { t: "பாதுகாப்பு", d: "சனச மூலம் பாதுகாப்பானது" },
+      { t: "நெகிழ்வுத்தன்மை", d: "உடனடி பணம் பெறுதல்" },
+      { t: "கட்டணங்கள் இல்லை", d: "மறைமுக கட்டணங்கள் எதுவும் இல்லை" }
+    ]
   }
 };
 
 export default function Savings({ lang = 'si' }: { lang?: 'si' | 'en' | 'ta' }) {
   const [savingsTypes, setSavingsTypes] = useState<SavingsProduct[]>([]);
   const [loading, setLoading] = useState(true);
+  
+  const isTamil = lang === 'ta';
   const t = content[lang as keyof typeof content] || content.si;
 
   useEffect(() => {
@@ -52,7 +67,7 @@ export default function Savings({ lang = 'si' }: { lang?: 'si' | 'en' | 'ta' }) 
       setLoading(false);
     }
     fetchSavings();
-  }, []);
+  }, [lang]);
 
   return (
     <div className="min-h-screen bg-white dark:bg-[#020617] transition-all duration-500 pb-40">
@@ -67,11 +82,11 @@ export default function Savings({ lang = 'si' }: { lang?: 'si' | 'en' | 'ta' }) 
             <TrendingUp size={14} /> High-Yield Savings
           </motion.div>
           
-          <h1 className="text-7xl md:text-9xl font-black tracking-tighter uppercase italic leading-[0.8] text-slate-900 dark:text-white">
+          <h1 className={`${isTamil ? 'text-6xl md:text-8xl' : 'text-7xl md:text-9xl'} font-black tracking-tighter uppercase italic leading-[0.8] text-slate-900 dark:text-white`}>
             {t.heroTitle}<span className="text-blue-600">.</span>
           </h1>
           
-          <p className="mt-10 text-xl text-slate-600 dark:text-slate-400 max-w-xl font-medium leading-relaxed">
+          <p className={`mt-10 ${isTamil ? 'text-lg' : 'text-xl'} text-slate-600 dark:text-slate-400 max-w-xl font-medium leading-relaxed`}>
             {t.heroSub}
           </p>
         </div>
@@ -95,7 +110,6 @@ export default function Savings({ lang = 'si' }: { lang?: 'si' | 'en' | 'ta' }) 
                 transition={{ delay: idx * 0.1 }}
                 className="group relative flex flex-col rounded-[3.5rem] bg-slate-50 dark:bg-white/[0.02] border border-slate-200 dark:border-white/5 overflow-hidden hover:border-blue-500/40 transition-all duration-500 shadow-sm hover:shadow-xl"
               >
-                {/* Interest Badge */}
                 <div className="absolute top-8 right-8 z-20">
                   <div className="bg-white dark:bg-slate-900 shadow-xl px-4 py-2 rounded-2xl border border-slate-100 dark:border-white/10">
                     <p className="text-[9px] font-black uppercase text-slate-400 mb-0.5">Up to</p>
@@ -103,12 +117,11 @@ export default function Savings({ lang = 'si' }: { lang?: 'si' | 'en' | 'ta' }) 
                   </div>
                 </div>
 
-                {/* Top Section */}
                 <div className="p-10 pt-12">
                   <div className="w-16 h-16 bg-blue-600 text-white rounded-[1.5rem] flex items-center justify-center shadow-lg shadow-blue-600/30 mb-8">
                     <PiggyBank size={32} />
                   </div>
-                  <h3 className="text-3xl font-black tracking-tighter uppercase italic text-slate-900 dark:text-white mb-4 leading-tight">
+                  <h3 className={`${isTamil ? 'text-2xl' : 'text-3xl'} font-black tracking-tighter uppercase italic text-slate-900 dark:text-white mb-4 leading-tight`}>
                     {savings.name}
                   </h3>
                   <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed line-clamp-2 font-medium">
@@ -116,7 +129,6 @@ export default function Savings({ lang = 'si' }: { lang?: 'si' | 'en' | 'ta' }) 
                   </p>
                 </div>
 
-                {/* Features List */}
                 <div className="px-10 pb-10 flex-grow">
                   <div className="pt-8 border-t border-slate-200 dark:border-white/5">
                     <p className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-6 italic">{t.benefitsHeading}</p>
@@ -124,14 +136,13 @@ export default function Savings({ lang = 'si' }: { lang?: 'si' | 'en' | 'ta' }) 
                       {savings.features?.map((feature, i) => (
                         <li key={i} className="flex items-center gap-3 text-sm font-bold text-slate-700 dark:text-slate-300">
                           <div className="w-1.5 h-1.5 rounded-full bg-blue-600" />
-                          {feature}
+                          <span className={isTamil ? 'text-[13px]' : 'text-sm'}>{feature}</span>
                         </li>
                       ))}
                     </ul>
                   </div>
                 </div>
 
-                {/* CTA Button */}
                 <div className="p-4 pt-0">
                   <button className="w-full bg-white dark:bg-slate-800 text-slate-900 dark:text-white py-6 rounded-[2.5rem] font-black uppercase text-[11px] tracking-widest border border-slate-200 dark:border-slate-700 group-hover:bg-blue-600 group-hover:text-white group-hover:border-blue-600 transition-all duration-500 flex items-center justify-center gap-3 shadow-sm">
                     {t.ctaBtn} <ArrowRight size={18} />
@@ -154,7 +165,7 @@ export default function Savings({ lang = 'si' }: { lang?: 'si' | 'en' | 'ta' }) 
                 <div className="w-12 h-12 bg-blue-600/20 text-blue-400 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-blue-600 group-hover:text-white transition-all">
                   {i === 0 ? <Coins size={24} /> : i === 1 ? <ShieldCheck size={24} /> : i === 2 ? <Zap size={24} /> : <Gift size={24} />}
                 </div>
-                <h4 className="text-lg font-black uppercase italic tracking-widest mb-2">{item.t}</h4>
+                <h4 className={`${isTamil ? 'text-base' : 'text-lg'} font-black uppercase italic tracking-widest mb-2`}>{item.t}</h4>
                 <p className="text-slate-400 text-[10px] font-bold uppercase tracking-[0.2em]">{item.d}</p>
               </div>
               <div className="absolute top-0 right-0 w-32 h-32 bg-blue-600/10 blur-3xl rounded-full" />

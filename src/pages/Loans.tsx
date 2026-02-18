@@ -39,12 +39,28 @@ const content = {
       { t: "අනුමැතිය", d: "ක්ෂණික තීරණය" },
       { t: "මුදල් ලබාදීම", d: "සෘජුවම ගිණුමට" }
     ]
+  },
+  ta: {
+    heroTitle: "நிதி வலுவூட்டல்",
+    heroSub: "உங்கள் கனவுகளுக்காக வடிவமைக்கப்பட்ட கடன் சேவைகள்",
+    processTitle: "எளிய 4 படிகள்",
+    applyBtn: "இப்போதே விண்ணப்பிக்கவும்",
+    rateLabel: "வட்டி விகிதம்",
+    limitLabel: "அதிகபட்ச எல்லை",
+    steps: [
+      { t: "விண்ணப்பிக்க", d: "ஆன்லைன் அல்லது கிளை மூலம்" },
+      { t: "சரிபார்ப்பு", d: "ஆவணங்கள் சரிபார்ப்பு" },
+      { t: "அங்கீகாரம்", d: "உடனடி முடிவு" },
+      { t: "நிதி வழங்கல்", d: "நேரடியாக கணக்கிற்கு" }
+    ]
   }
 };
 
 export default function Loans({ lang = 'si' }: { lang?: 'si' | 'en' | 'ta' }) {
   const [loanProducts, setLoanProducts] = useState<LoanProduct[]>([]);
   const [loading, setLoading] = useState(true);
+  
+  const isTamil = lang === 'ta';
   const t = content[lang as keyof typeof content] || content.si;
 
   useEffect(() => {
@@ -58,13 +74,13 @@ export default function Loans({ lang = 'si' }: { lang?: 'si' | 'en' | 'ta' }) {
       setLoading(false);
     }
     fetchLoans();
-  }, []);
+  }, [lang]);
 
   return (
     <div className="py-20 bg-white dark:bg-[#020617] min-h-screen overflow-hidden transition-colors duration-1000">
       <div className="max-w-7xl mx-auto px-6">
         
-        {/* --- Advanced Hero Section --- */}
+        {/* --- Hero Section --- */}
         <div className="relative mb-28 text-center pt-10">
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
@@ -73,14 +89,15 @@ export default function Loans({ lang = 'si' }: { lang?: 'si' | 'en' | 'ta' }) {
           >
             <ShieldCheck size={14} /> Trusted Credit Solutions
           </motion.div>
-          <h1 className="text-6xl md:text-8xl font-black text-slate-900 dark:text-white mb-8 tracking-tighter italic uppercase leading-[0.9]">
+          
+          <h1 className={`${isTamil ? 'text-5xl md:text-7xl' : 'text-6xl md:text-8xl'} font-black text-slate-900 dark:text-white mb-8 tracking-tighter italic uppercase leading-[0.9]`}>
             {t.heroTitle} <span className="text-green-600 animate-pulse">.</span>
           </h1>
-          <p className="text-xl text-slate-500 dark:text-slate-400 max-w-2xl mx-auto font-medium">
+          
+          <p className={`${isTamil ? 'text-lg' : 'text-xl'} text-slate-500 dark:text-slate-400 max-w-2xl mx-auto font-medium`}>
             {t.heroSub}
           </p>
           
-          {/* Background Decorative Elements */}
           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-96 bg-green-500/5 blur-[120px] rounded-full -z-10" />
         </div>
 
@@ -103,7 +120,6 @@ export default function Loans({ lang = 'si' }: { lang?: 'si' | 'en' | 'ta' }) {
                 transition={{ delay: idx * 0.1 }}
                 className="group relative bg-slate-50/50 dark:bg-white/[0.03] rounded-[3rem] p-10 shadow-sm hover:shadow-2xl hover:shadow-green-500/5 transition-all duration-700 border border-slate-100 dark:border-white/5 flex flex-col"
               >
-                {/* Floating Badge */}
                 <div className="absolute -top-4 right-10 bg-slate-900 dark:bg-green-600 text-white text-[9px] font-black px-5 py-2 rounded-full opacity-0 group-hover:opacity-100 transition-all transform translate-y-2 group-hover:translate-y-0 shadow-xl">
                   {loan.interest_rate} APR
                 </div>
@@ -112,7 +128,9 @@ export default function Loans({ lang = 'si' }: { lang?: 'si' | 'en' | 'ta' }) {
                   <div className="w-20 h-20 bg-white dark:bg-slate-950 text-green-600 rounded-[1.8rem] flex items-center justify-center mb-8 group-hover:bg-green-600 group-hover:text-white transition-all duration-500 shadow-sm border border-slate-100 dark:border-white/5">
                     <Banknote size={36} strokeWidth={1.5} />
                   </div>
-                  <h3 className="text-3xl font-black text-slate-800 dark:text-white uppercase italic tracking-tighter mb-4 leading-tight">{loan.title}</h3>
+                  <h3 className={`${isTamil ? 'text-2xl' : 'text-3xl'} font-black text-slate-800 dark:text-white uppercase italic tracking-tighter mb-4 leading-tight`}>
+                    {loan.title}
+                  </h3>
                   <p className="text-slate-500 dark:text-slate-400 text-sm leading-relaxed font-medium line-clamp-3">
                     {loan.description}
                   </p>
@@ -137,14 +155,15 @@ export default function Loans({ lang = 'si' }: { lang?: 'si' | 'en' | 'ta' }) {
           </div>
         )}
 
-        {/* --- Premium Process Stepper --- */}
+        {/* --- Stepper Section --- */}
         <div className="bg-slate-950 dark:bg-black rounded-[4rem] p-12 md:p-24 relative overflow-hidden shadow-2xl">
-          {/* Abstract Pattern */}
           <div className="absolute inset-0 opacity-[0.03] pointer-events-none bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')]" />
           <div className="absolute -bottom-24 -left-24 w-96 h-96 bg-green-500/10 blur-[120px] rounded-full" />
 
           <div className="relative z-10 text-center mb-24">
-            <h2 className="text-4xl md:text-5xl font-black text-white italic uppercase tracking-tighter mb-6">{t.processTitle}</h2>
+            <h2 className={`${isTamil ? 'text-3xl md:text-4xl' : 'text-4xl md:text-5xl'} font-black text-white italic uppercase tracking-tighter mb-6`}>
+              {t.processTitle}
+            </h2>
             <div className="w-24 h-2 bg-green-600 mx-auto rounded-full" />
           </div>
 
@@ -159,8 +178,12 @@ export default function Loans({ lang = 'si' }: { lang?: 'si' | 'en' | 'ta' }) {
                     <div className="hidden md:block absolute top-1/2 -right-12 w-8 h-[1px] bg-white/20" />
                   )}
                 </div>
-                <h3 className="text-white font-black uppercase italic tracking-[0.2em] mb-4 text-lg">{step.t}</h3>
-                <p className="text-slate-400 text-[11px] font-bold leading-relaxed uppercase tracking-wider px-4">{step.d}</p>
+                <h3 className={`${isTamil ? 'text-base' : 'text-lg'} text-white font-black uppercase italic tracking-[0.2em] mb-4`}>
+                  {step.t}
+                </h3>
+                <p className="text-slate-400 text-[11px] font-bold leading-relaxed uppercase tracking-wider px-4">
+                  {step.d}
+                </p>
               </div>
             ))}
           </div>
