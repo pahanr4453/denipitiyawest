@@ -480,7 +480,7 @@ export default function App() {
                       </div>
                     </div>
 
-                    {/* --- ARCHITECTED BY SP Developers (LAYOUT SAVED) --- */}
+                    {/* --- ARCHITECTED BY SENESH PAHAN (LAYOUT SAVED) --- */}
                     <motion.div 
                         onMouseEnter={() => setIsHovered(true)}
                         onMouseLeave={() => setIsHovered(false)}
@@ -497,7 +497,7 @@ export default function App() {
                             <div className="text-right">
                                 <p className="text-[9px] font-black tracking-[0.6em] text-slate-500 uppercase mb-2">Architected by</p>
                                 <p className="text-xl font-black tracking-tighter text-white uppercase flex items-center gap-1">
-                                    SENESH <span className="text-green-500 px-2 bg-green-500/10 rounded-lg">PAHAN</span>
+                                    SP <span className="text-green-500 px-2 bg-green-500/10 rounded-lg">Developers</span>
                                 </p>
                             </div>
                             
