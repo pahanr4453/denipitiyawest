@@ -480,7 +480,7 @@ export default function App() {
                       </div>
                     </div>
 
-                    {/* --- ARCHITECTED BY SENESH PAHAN (LAYOUT SAVED) --- */}
+                    {/* --- ARCHITECTED BY SP Developers (LAYOUT SAVED) --- */}
                     <motion.div 
                         onMouseEnter={() => setIsHovered(true)}
                         onMouseLeave={() => setIsHovered(false)}
