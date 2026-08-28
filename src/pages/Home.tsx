@@ -536,7 +536,23 @@ export default function Home({
 
           setNotice(data);
 
-          setShowNotice(true);
+          // Show each notice only once on this browser.
+          // A newly-created notice gets a new key and will appear once.
+          const noticeKey =
+            String(
+              data.id ||
+              data.created_at ||
+              data.title
+            );
+
+          const lastSeenNotice =
+            localStorage.getItem(
+              'denipitiya-west-sanasa-last-seen-notice'
+            );
+
+          setShowNotice(
+            lastSeenNotice !== noticeKey
+          );
 
         }
 
@@ -677,6 +693,22 @@ export default function Home({
   const closeNotice =
     () => {
 
+      if (notice) {
+
+        const noticeKey =
+          String(
+            notice.id ||
+            notice.created_at ||
+            notice.title
+          );
+
+        localStorage.setItem(
+          'denipitiya-west-sanasa-last-seen-notice',
+          noticeKey
+        );
+
+      }
+
       setShowNotice(
         false
       );
@@ -696,13 +728,24 @@ export default function Home({
       {showNotice &&
         notice && (
 
-          <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/70 backdrop-blur-md px-4">
+          <motion.div
+            initial={{
+              opacity: 0
+            }}
+            animate={{
+              opacity: 1
+            }}
+            className="fixed inset-0 z-[9999] flex items-center justify-center bg-slate-950/65 backdrop-blur-sm px-4 py-6"
+            onClick={
+              closeNotice
+            }
+          >
 
             <motion.div
               initial={{
                 opacity: 0,
-                scale: 0.88,
-                y: 30
+                scale: 0.94,
+                y: 24
               }}
               animate={{
                 opacity: 1,
@@ -710,11 +753,21 @@ export default function Home({
                 y: 0
               }}
               transition={{
-                duration:
-                  0.35
+                type: 'spring',
+                stiffness: 260,
+                damping: 24
               }}
-              className="relative w-full max-w-2xl bg-white dark:bg-slate-900 rounded-[2rem] overflow-hidden shadow-2xl border border-slate-200 dark:border-slate-700"
+              onClick={
+                e =>
+                  e.stopPropagation()
+              }
+              className="relative w-full max-w-xl overflow-hidden rounded-[2rem] bg-white dark:bg-slate-900 shadow-[0_30px_90px_rgba(0,0,0,0.35)] border border-white/70 dark:border-slate-700"
             >
+
+              {/* TOP ACCENT */}
+
+              <div className="h-1.5 w-full bg-gradient-to-r from-green-500 via-emerald-500 to-teal-500" />
+
 
               {/* CLOSE */}
 
@@ -722,11 +775,12 @@ export default function Home({
                 onClick={
                   closeNotice
                 }
-                className="absolute z-20 right-4 top-4 w-11 h-11 rounded-full bg-black/60 text-white flex items-center justify-center hover:bg-red-600 transition-all"
+                aria-label="Close notice"
+                className="absolute z-20 right-4 top-5 w-10 h-10 rounded-full bg-white/90 dark:bg-slate-800/90 text-slate-700 dark:text-slate-200 shadow-lg border border-slate-200 dark:border-slate-700 flex items-center justify-center hover:scale-105 hover:text-red-600 transition-all"
               >
 
                 <X
-                  size={22}
+                  size={19}
                 />
 
               </button>
@@ -734,49 +788,69 @@ export default function Home({
 
               {/* IMAGE */}
 
-              <div className="relative w-full bg-slate-100 dark:bg-slate-800">
+              {notice.image_url && (
 
-                <img
-                  src={
-                    notice.image_url
-                  }
-                  alt={
-                    notice.title
-                  }
-                  className="w-full max-h-[55vh] object-contain"
-                />
+                <div className="relative w-full bg-slate-100 dark:bg-slate-950">
 
-              </div>
+                  <img
+                    src={
+                      notice.image_url
+                    }
+                    alt={
+                      notice.title || 'Notice'
+                    }
+                    className="w-full max-h-[42vh] object-cover"
+                  />
+
+                  <div className="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-black/25 to-transparent pointer-events-none" />
+
+                </div>
+
+              )}
 
 
               {/* CONTENT */}
 
-              <div className="p-7 md:p-9">
+              <div className="p-6 sm:p-8">
 
-                <div className="flex items-center gap-3 mb-4">
+                <div className="flex items-center gap-3 mb-5 pr-12">
 
-                  <div className="w-11 h-11 rounded-xl bg-green-100 dark:bg-green-900/30 text-green-600 flex items-center justify-center">
+                  <div className="w-10 h-10 rounded-2xl bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400 flex items-center justify-center">
 
                     <Bell
-                      size={22}
+                      size={19}
                     />
 
                   </div>
 
-                  <span className="text-[10px] font-black uppercase tracking-[0.3em] text-green-600">
+                  <div>
 
-                    {lang === 'si'
-                      ? 'දැනුම්දීම'
-                      : lang === 'ta'
-                      ? 'அறிவிப்பு'
-                      : 'Notice'}
+                    <span className="block text-[10px] font-black uppercase tracking-[0.28em] text-green-600 dark:text-green-400">
 
-                  </span>
+                      {lang === 'si'
+                        ? 'දැනුම්දීම'
+                        : lang === 'ta'
+                        ? 'அறிவிப்பு'
+                        : 'Notice'}
+
+                    </span>
+
+                    <span className="block text-xs font-semibold text-slate-400 mt-0.5">
+
+                      {lang === 'si'
+                        ? 'නවතම තොරතුරු'
+                        : lang === 'ta'
+                        ? 'சமீபத்திய தகவல்'
+                        : 'Latest update'}
+
+                    </span>
+
+                  </div>
 
                 </div>
 
 
-                <h2 className="text-3xl md:text-4xl font-black uppercase italic tracking-tight text-slate-900 dark:text-white mb-4">
+                <h2 className="text-2xl sm:text-3xl font-black tracking-tight text-slate-900 dark:text-white mb-3">
 
                   {
                     notice.title
@@ -787,7 +861,7 @@ export default function Home({
 
                 {notice.description && (
 
-                  <p className="text-slate-600 dark:text-slate-400 leading-relaxed font-medium">
+                  <p className="text-sm sm:text-base text-slate-600 dark:text-slate-300 leading-7 font-medium">
 
                     {
                       notice.description
@@ -798,26 +872,30 @@ export default function Home({
                 )}
 
 
-                <button
-                  onClick={
-                    closeNotice
-                  }
-                  className="mt-7 w-full py-4 rounded-2xl bg-green-600 hover:bg-green-700 text-white font-black uppercase tracking-wider transition-all"
-                >
+                <div className="mt-7 flex items-center justify-end">
 
-                  {lang === 'si'
-                    ? 'හරි'
-                    : lang === 'ta'
-                    ? 'சரி'
-                    : 'Got It'}
+                  <button
+                    onClick={
+                      closeNotice
+                    }
+                    className="px-6 py-3 rounded-xl bg-green-600 hover:bg-green-700 text-white text-sm font-black uppercase tracking-wider transition-all shadow-lg shadow-green-600/20 active:scale-[0.98]"
+                  >
 
-                </button>
+                    {lang === 'si'
+                      ? 'හරි'
+                      : lang === 'ta'
+                      ? 'சரி'
+                      : 'Got It'}
+
+                  </button>
+
+                </div>
 
               </div>
 
             </motion.div>
 
-          </div>
+          </motion.div>
 
         )}
 
