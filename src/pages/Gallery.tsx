@@ -98,65 +98,74 @@ export default function Gallery({ lang = 'si' }: { lang?: 'si' | 'en' | 'ta' }) 
     <div className="min-h-screen bg-white dark:bg-[#020617] transition-all duration-1000">
       
       {/* --- HERO HEADER --- */}
-      <header className="pt-32 pb-20 px-6 max-w-[1800px] mx-auto">
+      <header className="pt-28 md:pt-32 pb-14 md:pb-16 px-5 md:px-8 max-w-[1600px] mx-auto">
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="flex items-center gap-3 text-green-600 mb-8 font-black uppercase text-[10px] tracking-[0.4em] border-l-2 border-green-600 pl-4"
+          className="inline-flex items-center gap-2.5 text-green-600 mb-5 font-bold uppercase text-[10px] tracking-[0.28em] border-l-2 border-green-600 pl-3.5"
         >
           {t.archive}
         </motion.div>
         
-        <h2 className={`${isTamil ? 'text-6xl md:text-8xl' : 'text-7xl md:text-9xl'} font-black text-slate-900 dark:text-white italic uppercase tracking-tighter leading-[0.8] mb-12`}>
-          PHOTO <br /> <span className="text-green-600">{t.museum}</span>
-        </h2>
+        <div className="max-w-4xl">
+          <h2 className={`${isTamil ? 'text-4xl md:text-6xl' : 'text-4xl sm:text-5xl md:text-6xl lg:text-7xl'} font-extrabold text-slate-900 dark:text-white tracking-[-0.045em] leading-[0.98] mb-5`}>
+            Photo <span className="text-green-600">{t.museum}</span>
+          </h2>
+          <p className="max-w-2xl text-sm md:text-base leading-7 text-slate-500 dark:text-slate-400 font-medium">
+            {lang === 'si'
+              ? 'අපගේ විශේෂ අවස්ථා, වැඩසටහන් සහ මතකයන් එක තැනකින් නරඹන්න.'
+              : lang === 'ta'
+              ? 'எங்கள் சிறப்பு தருணங்கள், நிகழ்வுகள் மற்றும் நினைவுகளை ஒரே இடத்தில் பாருங்கள்.'
+              : 'Explore our special moments, events and memories in one refined collection.'}
+          </p>
+        </div>
       </header>
 
-      <main className="max-w-[1800px] mx-auto px-6 pb-40">
+      <main className="max-w-[1600px] mx-auto px-5 md:px-8 pb-32">
         {Object.keys(groupedPhotos).length === 0 ? (
           <div className="py-40 text-center bg-slate-50 dark:bg-white/[0.02] rounded-[4rem] border border-dashed border-slate-200 dark:border-white/10">
             <ImageIcon className="w-16 h-16 text-slate-300 dark:text-slate-700 mx-auto mb-6" strokeWidth={1} />
             <h3 className="text-slate-400 font-black uppercase text-xs tracking-[0.3em]">{t.empty}</h3>
           </div>
         ) : (
-          <div className="space-y-40">
+          <div className="space-y-24 md:space-y-28">
             {Object.entries(groupedPhotos).map(([category, items], albumIdx) => (
               <section key={category} className="relative">
                 {/* Album Title Block */}
-                <div className="flex flex-col md:flex-row md:items-end gap-6 mb-12">
+                <div className="flex flex-col md:flex-row md:items-end gap-5 mb-8 md:mb-10">
                   <div className="flex items-baseline gap-4">
-                    <span className="text-7xl font-black text-slate-100 dark:text-white/5 italic leading-none">0{albumIdx + 1}</span>
-                    <h3 className={`${isTamil ? 'text-3xl' : 'text-4xl'} font-black text-slate-900 dark:text-white uppercase italic tracking-tighter`}>{category}</h3>
+                    <span className="text-5xl md:text-6xl font-extrabold text-slate-100 dark:text-white/5 leading-none">0{albumIdx + 1}</span>
+                    <h3 className={`${isTamil ? 'text-2xl md:text-3xl' : 'text-2xl md:text-3xl'} font-extrabold text-slate-900 dark:text-white tracking-tight`}>{category}</h3>
                   </div>
                   <div className="flex-1 h-[1px] bg-slate-200 dark:bg-white/10 mb-4 hidden md:block" />
-                  <div className="flex items-center gap-3 bg-slate-900 dark:bg-green-600 text-white px-6 py-3 rounded-2xl shadow-xl self-start">
+                  <div className="flex items-center gap-2.5 bg-slate-900 dark:bg-green-600 text-white px-4 py-2.5 rounded-xl shadow-lg self-start">
                     <Sparkles size={14} className="text-green-400 dark:text-white" />
-                    <span className="text-[10px] font-black uppercase tracking-[0.2em]">{items.length} {t.exhibits}</span>
+                    <span className="text-[10px] font-bold uppercase tracking-[0.16em]">{items.length} {t.exhibits}</span>
                   </div>
                 </div>
 
                 {/* Horizontal Cinematic Slider */}
                 <div className="relative group/slider">
-                  <div className="flex overflow-x-auto gap-10 pb-12 scrollbar-hide snap-x px-2">
+                  <div className="flex overflow-x-auto gap-5 md:gap-7 pb-10 scrollbar-hide snap-x px-1">
                     {items.map((photo, index) => (
                       <motion.div 
                         key={photo.id}
                         whileHover={{ y: -10 }}
-                        className="group relative min-w-[320px] md:min-w-[650px] aspect-[16/10] bg-slate-100 dark:bg-white/5 rounded-[3rem] overflow-hidden cursor-pointer snap-start border border-slate-100 dark:border-white/5 shadow-sm hover:shadow-2xl transition-all duration-700"
+                        className="group relative min-w-[280px] sm:min-w-[360px] md:min-w-[520px] lg:min-w-[560px] aspect-[16/10] bg-slate-100 dark:bg-white/5 rounded-[2rem] overflow-hidden cursor-pointer snap-start border border-slate-100 dark:border-white/5 shadow-sm hover:shadow-2xl transition-all duration-700"
                         onClick={() => setSelectedImage({ cat: category, index })}
                       >
                         <img 
                           src={photo.image_url} 
                           alt={photo.title}
-                          className="w-full h-full object-cover transition-transform duration-[2s] group-hover:scale-110 grayscale-[40%] group-hover:grayscale-0"
+                          className="w-full h-full object-cover transition-transform duration-[1.6s] group-hover:scale-105 grayscale-[18%] group-hover:grayscale-0"
                           loading="lazy"
                         />
                         
                         {/* Overlay Information */}
-                        <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500 flex flex-col justify-end p-12">
+                        <div className="absolute inset-0 bg-gradient-to-t from-slate-950/95 via-slate-950/10 to-transparent opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-all duration-500 flex flex-col justify-end p-6 md:p-8">
                             <div className="translate-y-4 group-hover:translate-y-0 transition-all duration-500">
-                              <p className="text-green-500 font-black text-[9px] uppercase tracking-[0.4em] mb-3">{t.viewBtn}</p>
-                              <h4 className={`${isTamil ? 'text-3xl' : 'text-4xl'} text-white font-black uppercase italic tracking-tighter leading-tight mb-4`}>{photo.title}</h4>
+                              <p className="text-green-400 font-bold text-[9px] uppercase tracking-[0.28em] mb-2">{t.viewBtn}</p>
+                              <h4 className={`${isTamil ? 'text-xl md:text-2xl' : 'text-xl md:text-2xl'} text-white font-extrabold tracking-tight leading-tight mb-3`}>{photo.title}</h4>
                               <div className="flex items-center gap-4 text-white/40 text-[10px] font-black uppercase tracking-widest">
                                 <Calendar size={14} className="text-green-500" /> 
                                 {new Date(photo.created_at).toLocaleDateString(lang === 'si' ? 'si-LK' : lang === 'ta' ? 'ta-LK' : 'en-GB')}
@@ -165,8 +174,8 @@ export default function Gallery({ lang = 'si' }: { lang?: 'si' | 'en' | 'ta' }) 
                         </div>
 
                         {/* Centered Icon on Hover */}
-                        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-20 h-20 bg-white/10 backdrop-blur-2xl rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 scale-50 group-hover:scale-100 transition-all duration-500 border border-white/20">
-                            <Maximize2 className="text-white" size={28} strokeWidth={1.5} />
+                        <div className="absolute top-5 right-5 w-11 h-11 bg-black/25 backdrop-blur-xl rounded-full hidden md:flex items-center justify-center opacity-0 group-hover:opacity-100 scale-90 group-hover:scale-100 transition-all duration-300 border border-white/15">
+                            <Maximize2 className="text-white" size={18} strokeWidth={1.8} />
                         </div>
                       </motion.div>
                     ))}
@@ -209,22 +218,22 @@ export default function Gallery({ lang = 'si' }: { lang?: 'si' | 'en' | 'ta' }) 
             <div className="max-w-7xl w-full flex flex-col items-center">
               <motion.div 
                 layoutId={`img-${groupedPhotos[selectedImage.cat][selectedImage.index].id}`}
-                className="relative group"
+                className="relative group px-2 md:px-10"
               >
                 <img 
                   src={groupedPhotos[selectedImage.cat][selectedImage.index].image_url} 
-                  className="max-h-[75vh] w-full object-contain rounded-[2.5rem] shadow-[0_50px_100px_-20px_rgba(0,0,0,0.5)] border border-slate-200 dark:border-white/10" 
+                  className="max-h-[72vh] w-full object-contain rounded-[1.75rem] shadow-[0_35px_80px_-25px_rgba(0,0,0,0.5)] border border-slate-200 dark:border-white/10" 
                 />
               </motion.div>
               
               <motion.div 
                 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
-                className="mt-12 text-center"
+                className="mt-7 md:mt-9 text-center px-6"
               >
                 <span className="text-green-600 font-black text-xs tracking-[0.6em] uppercase mb-4 block">
                   {selectedImage.cat} — {selectedImage.index + 1}/{groupedPhotos[selectedImage.cat].length}
                 </span>
-                <h4 className={`${isTamil ? 'text-3xl md:text-5xl' : 'text-4xl md:text-6xl'} text-slate-900 dark:text-white font-black italic uppercase tracking-tighter leading-tight`}>
+                <h4 className={`${isTamil ? 'text-2xl md:text-4xl' : 'text-2xl md:text-4xl'} text-slate-900 dark:text-white font-extrabold tracking-tight leading-tight`}>
                   {groupedPhotos[selectedImage.cat][selectedImage.index].title}
                 </h4>
               </motion.div>
