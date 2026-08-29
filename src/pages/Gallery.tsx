@@ -95,8 +95,29 @@ export default function Gallery({ lang = 'si' }: { lang?: 'si' | 'en' | 'ta' }) 
   );
 
   return (
-    <div className="min-h-screen bg-white dark:bg-[#020617] transition-all duration-1000">
-      
+    <div className="relative min-h-screen overflow-hidden bg-white dark:bg-[#020617] transition-all duration-1000">
+
+      {/* --- AMBIENT BACKGROUND ANIMATION --- */}
+      <div className="pointer-events-none absolute inset-0 overflow-hidden">
+        <motion.div
+          animate={{ x: [0, 80, 10, 0], y: [0, 30, 90, 0], scale: [1, 1.08, 0.95, 1] }}
+          transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute -top-24 -left-24 h-[320px] w-[320px] rounded-full bg-green-500/10 blur-[90px] dark:bg-green-500/10"
+        />
+        <motion.div
+          animate={{ x: [0, -70, -20, 0], y: [0, 60, -10, 0], scale: [1, 0.92, 1.08, 1] }}
+          transition={{ duration: 22, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute top-[28%] -right-28 h-[380px] w-[380px] rounded-full bg-cyan-500/10 blur-[110px] dark:bg-cyan-400/10"
+        />
+        <motion.div
+          animate={{ x: [0, 60, -30, 0], y: [0, -40, 30, 0], scale: [1, 1.1, 0.96, 1] }}
+          transition={{ duration: 26, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute bottom-[-120px] left-[30%] h-[420px] w-[420px] rounded-full bg-emerald-400/10 blur-[120px] dark:bg-emerald-500/10"
+        />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(15,23,42,0.025)_1px,transparent_1px)] [background-size:26px_26px] dark:bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.035)_1px,transparent_1px)]" />
+      </div>
+
+      <div className="relative z-10">
       {/* --- HERO HEADER --- */}
       <header className="pt-28 md:pt-32 pb-14 md:pb-16 px-5 md:px-8 max-w-[1600px] mx-auto">
         <motion.div 
@@ -108,8 +129,8 @@ export default function Gallery({ lang = 'si' }: { lang?: 'si' | 'en' | 'ta' }) 
         </motion.div>
         
         <div className="max-w-4xl">
-          <h2 className={`${isTamil ? 'text-4xl md:text-6xl' : 'text-4xl sm:text-5xl md:text-6xl lg:text-7xl'} font-extrabold text-slate-900 dark:text-white tracking-[-0.045em] leading-[0.98] mb-5`}>
-            Photo <span className="text-green-600">{t.museum}</span>
+          <h2 className={`${isTamil ? 'text-4xl md:text-5xl' : 'text-4xl sm:text-5xl md:text-6xl'} font-extrabold text-slate-900 dark:text-white tracking-[-0.04em] leading-none mb-5`}>
+            <span className="text-green-600">{t.museum}</span>
           </h2>
           <p className="max-w-2xl text-sm md:text-base leading-7 text-slate-500 dark:text-slate-400 font-medium">
             {lang === 'si'
@@ -146,12 +167,12 @@ export default function Gallery({ lang = 'si' }: { lang?: 'si' | 'en' | 'ta' }) 
 
                 {/* Horizontal Cinematic Slider */}
                 <div className="relative group/slider">
-                  <div className="flex overflow-x-auto gap-5 md:gap-7 pb-10 scrollbar-hide snap-x px-1">
+                  <div className="flex overflow-x-auto gap-4 md:gap-5 pb-9 scrollbar-hide snap-x px-1">
                     {items.map((photo, index) => (
                       <motion.div 
                         key={photo.id}
                         whileHover={{ y: -10 }}
-                        className="group relative min-w-[280px] sm:min-w-[360px] md:min-w-[520px] lg:min-w-[560px] aspect-[16/10] bg-slate-100 dark:bg-white/5 rounded-[2rem] overflow-hidden cursor-pointer snap-start border border-slate-100 dark:border-white/5 shadow-sm hover:shadow-2xl transition-all duration-700"
+                        className="group relative min-w-[240px] sm:min-w-[300px] md:min-w-[420px] lg:min-w-[460px] aspect-[4/3] bg-slate-100 dark:bg-white/5 rounded-[1.6rem] overflow-hidden cursor-pointer snap-start border border-slate-100 dark:border-white/5 shadow-sm hover:shadow-2xl transition-all duration-700"
                         onClick={() => setSelectedImage({ cat: category, index })}
                       >
                         <img 
@@ -246,6 +267,7 @@ export default function Gallery({ lang = 'si' }: { lang?: 'si' | 'en' | 'ta' }) 
         .scrollbar-hide::-webkit-scrollbar { display: none; }
         .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
       `}</style>
+      </div>
     </div>
   );
 }
