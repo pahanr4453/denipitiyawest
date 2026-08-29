@@ -224,18 +224,18 @@ export default function App() {
               <motion.div
                 animate={{ x: [0, 60, 0], y: [0, 35, 0] }}
                 transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
-                className="absolute -left-28 -top-28 h-[360px] w-[360px] rounded-full bg-green-500/10 blur-[120px]"
+                className="absolute -left-28 -top-28 h-[360px] w-[360px] rounded-full bg-blue-500/12 blur-[120px]"
               />
               <motion.div
                 animate={{ x: [0, -45, 0], y: [0, -25, 0] }}
                 transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }}
-                className="absolute -bottom-32 -right-24 h-[420px] w-[420px] rounded-full bg-cyan-500/8 blur-[140px]"
+                className="absolute -bottom-32 -right-24 h-[420px] w-[420px] rounded-full bg-emerald-500/10 blur-[140px]"
               />
 
               <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.035)_1px,transparent_1px)] [background-size:30px_30px]" />
 
               <div className="absolute left-1/2 top-1/2 h-[520px] w-[520px] -translate-x-1/2 -translate-y-1/2 rounded-full border border-white/[0.03]" />
-              <div className="absolute left-1/2 top-1/2 h-[380px] w-[380px] -translate-x-1/2 -translate-y-1/2 rounded-full border border-green-400/[0.05]" />
+              <div className="absolute left-1/2 top-1/2 h-[380px] w-[380px] -translate-x-1/2 -translate-y-1/2 rounded-full border border-blue-400/[0.06]" />
             </div>
 
             <div className="relative z-10 flex w-full max-w-md flex-col items-center text-center">
@@ -246,18 +246,18 @@ export default function App() {
                 transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
                 className="relative mb-8"
               >
-                <div className="absolute inset-0 rounded-full bg-green-400/15 blur-3xl" />
+                <div className="absolute inset-0 rounded-full bg-blue-400/10 blur-3xl" />
 
                 <motion.div
                   animate={{ rotate: 360 }}
                   transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
-                  className="absolute -inset-5 rounded-full border border-dashed border-green-400/15"
+                  className="absolute -inset-5 rounded-full border border-dashed border-blue-400/15"
                 />
 
-                <div className="relative flex h-28 w-28 items-center justify-center rounded-[2rem] border border-white/[0.07] bg-white/[0.035] backdrop-blur-xl">
+                <div className="relative flex h-28 w-28 items-center justify-center rounded-[2rem] border border-blue-400/10 bg-white/[0.03] backdrop-blur-xl">
                   <img
                     src="/sf.png"
-                    className="w-20 h-auto drop-shadow-[0_0_24px_rgba(34,197,94,0.25)]"
+                    className="w-20 h-auto drop-shadow-[0_0_18px_rgba(59,130,246,0.18)]"
                     alt="Denipitiya West Sanasa Logo"
                   />
                 </div>
@@ -268,7 +268,7 @@ export default function App() {
                 initial={{ opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.1 }}
-                className="mb-3 text-[9px] font-bold uppercase tracking-[0.28em] text-green-400"
+                className="mb-3 text-[9px] font-bold uppercase tracking-[0.28em] text-blue-400"
               >
                 Welcome
               </motion.p>
@@ -280,7 +280,7 @@ export default function App() {
                 className="text-3xl font-extrabold tracking-[-0.045em] text-white sm:text-4xl"
               >
                 Denipitiya West
-                <span className="ml-2 text-green-400">SANASA</span>
+                <span className="ml-2 text-emerald-400">SANASA</span>
               </motion.h2>
 
               <motion.p
@@ -299,12 +299,12 @@ export default function App() {
                     initial={{ width: "0%" }}
                     animate={{ width: "100%" }}
                     transition={{ duration: 2.7, ease: [0.22, 1, 0.36, 1] }}
-                    className="h-full rounded-full bg-gradient-to-r from-green-600 via-emerald-400 to-cyan-400"
+                    className="h-full rounded-full bg-gradient-to-r from-blue-600 via-cyan-400 to-emerald-400"
                   />
                 </div>
 
                 <div className="mt-3 flex items-center justify-center gap-2 text-[8px] font-semibold uppercase tracking-[0.18em] text-slate-600">
-                  <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-green-400" />
+                  <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-blue-400" />
                   Secure session
                 </div>
               </div>
@@ -582,4 +582,3 @@ export default function App() {
     </div>
   );
 }
-
