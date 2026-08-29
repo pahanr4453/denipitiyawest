@@ -1,5 +1,16 @@
-import { useState, useEffect } from 'react';
-import { TrendingUp, Calendar, Loader2, ShieldCheck, ArrowUpRight, Info, CheckCircle2 } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import {
+  TrendingUp,
+  Loader2,
+  ShieldCheck,
+  ArrowUpRight,
+  Info,
+  CheckCircle2,
+  CalendarDays,
+  Coins,
+  RefreshCw,
+  BadgeCheck
+} from 'lucide-react';
 import { motion } from 'framer-motion';
 import { supabase } from '../lib/supabase';
 
@@ -13,67 +24,118 @@ interface FDRate {
 
 const content = {
   en: {
-    heroTitle: "Grow Wealth",
-    heroSub: "Secure your future with industry-leading interest rates",
-    mainHeading: "Fixed Deposit Rates",
-    subHeading: "Attractive returns for your hard-earned savings",
-    periodLabel: "Investment Period",
-    rateLabel: "Annual Rate",
-    minLabel: "Minimum Deposit",
-    perAnnum: "per annum",
-    ctaBtn: "Invest Now",
+    heroTitle: 'Fixed Deposits',
+    heroSub: 'Grow your savings with secure terms and attractive returns.',
+    badge: 'Market Leading Rates',
+    mainHeading: 'Fixed Deposit Rates',
+    subHeading: 'Choose the term that matches your savings goal.',
+    periodLabel: 'Investment Period',
+    rateLabel: 'Annual Rate',
+    minLabel: 'Minimum Deposit',
+    perAnnum: 'per annum',
+    ctaBtn: 'Invest Now',
+    popular: 'Most Popular',
+    whyTitle: 'Why Save With Us?',
+    whySub: 'Simple, secure and rewarding fixed deposit options.',
+    readyTitle: 'Ready to start?',
+    readySub: 'Talk to our team and choose the right deposit plan.',
     features: [
-      { t: "High Returns", d: "Maximum profit for your savings" },
-      { t: "Flexibility", d: "Terms from 3 to 60 months" },
-      { t: "Secure", d: "Government backed protection" },
-      { t: "Auto-Renewal", d: "Seamless reinvestment options" }
+      { t: 'High Returns', d: 'Competitive returns for your savings.' },
+      { t: 'Flexible Terms', d: 'Choose from short and long-term options.' },
+      { t: 'Secure', d: 'Trusted deposit protection and support.' },
+      { t: 'Auto-Renewal', d: 'Easy reinvestment when your term ends.' }
     ]
   },
   si: {
-    heroTitle: "ධනය වර්ධනය",
-    heroSub: "ඉහළම පොලී අනුපාත සමඟ ඔබේ අනාගතය සුරක්ෂිත කරගන්න",
-    mainHeading: "ස්ථාවර තැන්පතු අනුපාත",
-    subHeading: "ඔබේ ඉතිරි කිරීම් සඳහා ආකර්ශනීය ප්‍රතිලාභ",
-    periodLabel: "ආයෝජන කාලය",
-    rateLabel: "වාර්ෂික පොලිය",
-    minLabel: "අවම තැන්පතුව",
-    perAnnum: "වසරකට",
-    ctaBtn: "දැන්ම ආයෝජනය කරන්න",
+    heroTitle: 'ස්ථාවර තැන්පතු',
+    heroSub: 'ආරක්ෂිත කාලසීමා සහ ආකර්ශනීය ප්‍රතිලාභ සමඟ ඔබේ ඉතුරුම් වර්ධනය කරන්න.',
+    badge: 'ආකර්ශනීය පොලී අනුපාත',
+    mainHeading: 'ස්ථාවර තැන්පතු අනුපාත',
+    subHeading: 'ඔබේ ඉතුරුම් ඉලක්කයට ගැලපෙන කාලසීමාව තෝරන්න.',
+    periodLabel: 'ආයෝජන කාලය',
+    rateLabel: 'වාර්ෂික පොලිය',
+    minLabel: 'අවම තැන්පතුව',
+    perAnnum: 'වසරකට',
+    ctaBtn: 'දැන්ම ආයෝජනය කරන්න',
+    popular: 'වැඩිම ජනප්‍රිය',
+    whyTitle: 'අප සමඟ ඉතිරි කළ යුත්තේ ඇයි?',
+    whySub: 'සරල, සුරක්ෂිත සහ වටිනා ස්ථාවර තැන්පතු විකල්ප.',
+    readyTitle: 'ආරම්භ කිරීමට සූදානම්ද?',
+    readySub: 'ඔබට ගැලපෙන තැන්පතු සැලැස්ම තෝරාගැනීමට අපගේ කණ්ඩායම අමතන්න.',
     features: [
-      { t: "ඉහළ ප්‍රතිලාභ", d: "ඉතිරි කිරීම් සඳහා උපරිම ලාභයක්" },
-      { t: "නම්‍යශීලී බව", d: "මාස 3 සිට 60 දක්වා කාල සීමාවන්" },
-      { t: "සුරක්ෂිත බව", d: "රාජ්‍ය සහතිකලත් ආරක්ෂාව" },
-      { t: "ස්වයංක්‍රීය අලුත් කිරීම", d: "නැවත ආයෝජනයට පහසුකම්" }
+      { t: 'ඉහළ ප්‍රතිලාභ', d: 'ඔබේ ඉතිරිකිරීම් සඳහා තරඟකාරී ප්‍රතිලාභ.' },
+      { t: 'නම්‍යශීලී කාලසීමා', d: 'කෙටි සහ දිගු කාලීන විකල්ප තෝරන්න.' },
+      { t: 'සුරක්ෂිත බව', d: 'විශ්වාසනීය තැන්පතු ආරක්ෂාව සහ සහාය.' },
+      { t: 'ස්වයංක්‍රීය අලුත් කිරීම', d: 'කාලය අවසන් වූ විට පහසු නැවත ආයෝජනය.' }
     ]
   },
   ta: {
-    heroTitle: "செல்வத்தை பெருக்குங்கள்",
-    heroSub: "சந்தையில் முன்னணியில் உள்ள வட்டி விகிதங்களுடன் உங்கள் எதிர்காலத்தைப் பாதுகாக்கவும்",
-    mainHeading: "நிலையான வைப்பு விகிதங்கள்",
-    subHeading: "உங்கள் கஷ்டப்பட்டு சம்பாதித்த சேமிப்பிற்கு கவர்ச்சிகரமான வருமானம்",
-    periodLabel: "முதலீட்டு காலம்",
-    rateLabel: "ஆண்டு வட்டி",
-    minLabel: "குறைந்தபட்ச வைப்பு",
-    perAnnum: "ஆண்டுதோறும்",
-    ctaBtn: "இப்போதே முதலீடு செய்க",
+    heroTitle: 'நிலையான வைப்புகள்',
+    heroSub: 'பாதுகாப்பான காலவரம்புகள் மற்றும் கவர்ச்சிகரமான வருமானத்துடன் உங்கள் சேமிப்பை வளர்த்திடுங்கள்.',
+    badge: 'சிறந்த வட்டி விகிதங்கள்',
+    mainHeading: 'நிலையான வைப்பு விகிதங்கள்',
+    subHeading: 'உங்கள் சேமிப்பு இலக்குக்கு ஏற்ற காலத்தைத் தேர்ந்தெடுக்கவும்.',
+    periodLabel: 'முதலீட்டு காலம்',
+    rateLabel: 'ஆண்டு வட்டி',
+    minLabel: 'குறைந்தபட்ச வைப்பு',
+    perAnnum: 'ஆண்டுதோறும்',
+    ctaBtn: 'இப்போதே முதலீடு செய்க',
+    popular: 'மிகப் பிரபலமானது',
+    whyTitle: 'ஏன் எங்களுடன் சேமிக்க வேண்டும்?',
+    whySub: 'எளிமையான, பாதுகாப்பான மற்றும் பலனளிக்கும் நிலையான வைப்பு விருப்பங்கள்.',
+    readyTitle: 'தொடங்க தயாரா?',
+    readySub: 'உங்களுக்கு ஏற்ற வைப்பு திட்டத்தைத் தேர்ந்தெடுக்க எங்கள் குழுவை அணுகவும்.',
     features: [
-      { t: "அதிக வருமானம்", d: "உங்கள் சேமிப்பிற்கு அதிகபட்ச லாபம்" },
-      { t: "நெகிழ்வுத்தன்மை", d: "3 முதல் 60 மாதங்கள் வரையிலான கால அளவு" },
-      { t: "பாதுகாப்பு", d: "அரசாங்கத்தால் அங்கீகரிக்கப்பட்ட பாதுகாப்பு" },
-      { t: "தானியங்கி புதுப்பித்தல்", d: "தடையற்ற மறுமுதலீட்டு விருப்பங்கள்" }
+      { t: 'அதிக வருமானம்', d: 'உங்கள் சேமிப்புக்கு போட்டித்திறன் வாய்ந்த வருமானம்.' },
+      { t: 'நெகிழ்வான காலம்', d: 'குறுகிய மற்றும் நீண்டகால விருப்பங்கள்.' },
+      { t: 'பாதுகாப்பு', d: 'நம்பகமான வைப்பு பாதுகாப்பு மற்றும் ஆதரவு.' },
+      { t: 'தானியங்கி புதுப்பித்தல்', d: 'காலம் முடியும் போது எளிதான மறுமுதலீடு.' }
     ]
   }
 };
 
-export default function Rates({ lang = 'si' }: { lang?: 'si' | 'en' | 'ta' }) {
+const accents = [
+  {
+    soft: 'bg-blue-500/10',
+    text: 'text-blue-600 dark:text-blue-400',
+    border: 'border-blue-500/20',
+    glow: 'from-blue-500/20 via-transparent to-transparent'
+  },
+  {
+    soft: 'bg-emerald-500/10',
+    text: 'text-emerald-600 dark:text-emerald-400',
+    border: 'border-emerald-500/20',
+    glow: 'from-emerald-500/20 via-transparent to-transparent'
+  },
+  {
+    soft: 'bg-violet-500/10',
+    text: 'text-violet-600 dark:text-violet-400',
+    border: 'border-violet-500/20',
+    glow: 'from-violet-500/20 via-transparent to-transparent'
+  },
+  {
+    soft: 'bg-amber-500/10',
+    text: 'text-amber-600 dark:text-amber-400',
+    border: 'border-amber-500/20',
+    glow: 'from-amber-500/20 via-transparent to-transparent'
+  }
+];
+
+export default function Rates({
+  lang = 'si'
+}: {
+  lang?: 'si' | 'en' | 'ta';
+}) {
   const [fdRates, setFdRates] = useState<FDRate[]>([]);
   const [loading, setLoading] = useState(true);
-  
+
   const isTamil = lang === 'ta';
   const t = content[lang as keyof typeof content] || content.si;
 
   useEffect(() => {
     async function fetchRates() {
+      setLoading(true);
+
       const { data, error } = await supabase
         .from('fd_rates')
         .select('*')
@@ -82,153 +144,268 @@ export default function Rates({ lang = 'si' }: { lang?: 'si' | 'en' | 'ta' }) {
       if (!error) setFdRates(data || []);
       setLoading(false);
     }
+
     fetchRates();
   }, [lang]);
 
   return (
-    <div className="py-24 bg-[#f8fafc] dark:bg-[#020617] min-h-screen transition-colors duration-500 relative overflow-hidden">
-      
-      {/* --- DECORATIVE ELEMENTS --- */}
-      <div className="absolute -top-24 -left-24 w-96 h-96 bg-blue-400/20 dark:bg-blue-600/10 blur-[100px] rounded-full" />
-      <div className="absolute -bottom-24 -right-24 w-[500px] h-[500px] bg-indigo-400/10 dark:bg-indigo-600/5 blur-[120px] rounded-full" />
-      <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-[0.03] dark:opacity-[0.05] pointer-events-none" />
+    <div className="relative min-h-screen overflow-hidden bg-[#fbfdff] text-slate-900 transition-colors duration-500 dark:bg-[#020817] dark:text-white">
+      {/* AMBIENT BACKGROUND */}
+      <div className="pointer-events-none absolute inset-0 overflow-hidden">
+        <motion.div
+          animate={{ x: [0, 70, 15, 0], y: [0, 35, 80, 0], scale: [1, 1.08, 0.96, 1] }}
+          transition={{ duration: 22, repeat: Infinity, ease: 'easeInOut' }}
+          className="absolute -left-28 -top-32 h-[360px] w-[360px] rounded-full bg-blue-500/10 blur-[110px] dark:bg-blue-500/10"
+        />
 
-      <div className="max-w-7xl mx-auto px-6 relative z-10">
-        
-        {/* --- Hero Section --- */}
-        <div className="text-center mb-20">
-          <motion.div 
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="inline-flex items-center gap-2 bg-white dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 px-5 py-2 rounded-full text-[10px] font-black uppercase tracking-[0.2em] mb-6 border border-blue-100 dark:border-blue-800/50 shadow-sm"
-          >
-            <TrendingUp size={14} /> Market Leading Rates 2026
-          </motion.div>
-          <motion.h1 
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            className={`${isTamil ? 'text-5xl md:text-6xl' : 'text-6xl md:text-7xl'} font-black text-slate-900 dark:text-white mb-6 tracking-tighter italic uppercase`}
-          >
-            {t.heroTitle}<span className="text-blue-600">.</span>
-          </motion.h1>
-          <motion.p 
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.2 }}
-            className={`${isTamil ? 'text-base' : 'text-lg'} text-slate-500 dark:text-slate-400 max-w-2xl mx-auto font-medium leading-relaxed`}
-          >
-            {t.heroSub}
-          </motion.p>
-        </div>
+        <motion.div
+          animate={{ x: [0, -70, -20, 0], y: [0, 70, -15, 0], scale: [1, 0.94, 1.08, 1] }}
+          transition={{ duration: 26, repeat: Infinity, ease: 'easeInOut' }}
+          className="absolute -right-28 top-[20%] h-[430px] w-[430px] rounded-full bg-violet-500/10 blur-[130px] dark:bg-violet-500/10"
+        />
 
-        {/* --- Rates Grid --- */}
-        {loading ? (
-          <div className="flex flex-col justify-center items-center py-40 gap-4">
-            <Loader2 className="animate-spin text-blue-600" size={50} />
-            <p className="text-[10px] font-black uppercase tracking-widest text-slate-400 italic animate-pulse">Accessing Live Rates...</p>
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-24">
-            {fdRates.map((rate, idx) => (
-              <motion.div
-                key={rate.id}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ delay: idx * 0.1 }}
-                whileHover={{ y: -12, transition: { duration: 0.3 } }}
-                className={`relative group p-8 rounded-[3rem] border transition-all duration-500 ${
-                  rate.is_popular 
-                  ? 'bg-slate-900 dark:bg-blue-600 border-slate-900 dark:border-blue-500 shadow-2xl scale-105 z-10' 
-                  : 'bg-white/80 dark:bg-slate-900/50 backdrop-blur-md border-white dark:border-white/5 shadow-xl shadow-slate-200/50 dark:shadow-none hover:border-blue-300 dark:hover:border-blue-500/50'
-                }`}
+        <motion.div
+          animate={{ x: [0, 55, -35, 0], y: [0, -35, 30, 0] }}
+          transition={{ duration: 30, repeat: Infinity, ease: 'easeInOut' }}
+          className="absolute bottom-[-150px] left-[32%] h-[460px] w-[460px] rounded-full bg-emerald-500/10 blur-[140px] dark:bg-emerald-500/10"
+        />
+
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(15,23,42,0.04)_1px,transparent_1px)] [background-size:28px_28px] dark:bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.035)_1px,transparent_1px)]" />
+      </div>
+
+      <div className="relative z-10">
+        {/* HERO */}
+        <section className="px-5 pb-14 pt-28 md:px-8 md:pb-16 md:pt-32">
+          <div className="mx-auto max-w-7xl">
+            <motion.div
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="mb-6 inline-flex items-center gap-2 rounded-full border border-blue-200/80 bg-white/75 px-4 py-2 text-[10px] font-bold uppercase tracking-[0.2em] text-blue-700 shadow-sm backdrop-blur-xl dark:border-blue-500/20 dark:bg-blue-500/10 dark:text-blue-300"
+            >
+              <TrendingUp size={14} />
+              {t.badge}
+            </motion.div>
+
+            <div className="max-w-4xl">
+              <motion.h1
+                initial={{ opacity: 0, y: 18 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.05 }}
+                className={`${isTamil ? 'text-4xl md:text-5xl' : 'text-5xl sm:text-6xl md:text-7xl'} font-extrabold leading-[0.98] tracking-[-0.05em] text-slate-950 dark:text-white`}
               >
-                {rate.is_popular && (
-                  <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-blue-600 dark:bg-white text-white dark:text-blue-600 text-[9px] font-black px-6 py-2 rounded-full uppercase tracking-widest shadow-lg">
-                    Most Popular
-                  </div>
-                )}
+                {t.heroTitle}
+                <span className="text-blue-600">.</span>
+              </motion.h1>
 
-                <div className="text-center">
-                  <p className={`text-[10px] font-black uppercase tracking-widest mb-4 ${rate.is_popular ? 'text-blue-400' : 'text-slate-400'}`}>
-                    {t.periodLabel}
-                  </p>
-                  <h3 className={`${isTamil ? 'text-2xl' : 'text-3xl'} font-black italic uppercase tracking-tighter mb-8 ${rate.is_popular ? 'text-white' : 'text-slate-800 dark:text-white'}`}>
-                    {rate.period}
-                  </h3>
-                  
-                  <div className="mb-8 relative inline-block">
-                    <span className={`text-6xl font-black italic tracking-tighter ${rate.is_popular ? 'text-white' : 'text-blue-600'}`}>
-                      {rate.rate}
-                    </span>
-                    <span className={`block text-[10px] font-bold uppercase mt-2 ${rate.is_popular ? 'text-slate-400 dark:text-blue-100' : 'text-slate-500'}`}>
-                      % {t.perAnnum}
-                    </span>
-                  </div>
-
-                  <div className={`pt-8 border-t ${rate.is_popular ? 'border-white/10' : 'border-slate-50 dark:border-white/5'} space-y-2`}>
-                    <p className={`text-[9px] font-black uppercase tracking-widest ${rate.is_popular ? 'text-slate-500' : 'text-slate-400'}`}>
-                      {t.minLabel}
-                    </p>
-                    <p className={`text-lg font-black ${rate.is_popular ? 'text-blue-400 dark:text-white' : 'text-slate-800 dark:text-slate-200'}`}>
-                      {rate.min_amount}
-                    </p>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
+              <motion.p
+                initial={{ opacity: 0, y: 18 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.1 }}
+                className="mt-5 max-w-2xl text-sm font-medium leading-7 text-slate-600 md:text-base dark:text-slate-400"
+              >
+                {t.heroSub}
+              </motion.p>
+            </div>
           </div>
-        )}
+        </section>
 
-        {/* --- Info Sections --- */}
-        <div className="grid lg:grid-cols-2 gap-8 mb-24">
-          <motion.div 
-            whileHover={{ scale: 1.01 }}
-            className="bg-gradient-to-br from-blue-600 to-indigo-700 rounded-[4rem] p-12 md:p-16 text-white relative overflow-hidden shadow-2xl shadow-blue-500/30"
-          >
-            <div className="absolute -right-10 -bottom-10 opacity-10 rotate-12">
-              <ShieldCheck size={300} />
+        {/* RATES */}
+        <section className="px-5 pb-24 md:px-8">
+          <div className="mx-auto max-w-7xl">
+            <div className="mb-8 text-center md:mb-10">
+              <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-blue-600 dark:text-blue-400">
+                SANASA Fixed Deposits
+              </p>
+
+              <h2 className={`${isTamil ? 'text-2xl md:text-3xl' : 'text-3xl md:text-4xl'} mt-3 font-extrabold tracking-[-0.04em]`}>
+                {t.mainHeading}
+              </h2>
+
+              <p className="mt-3 text-sm font-medium text-slate-500 dark:text-slate-400">
+                {t.subHeading}
+              </p>
             </div>
-            <h2 className={`${isTamil ? 'text-3xl' : 'text-4xl'} font-black italic uppercase tracking-tighter mb-10 relative z-10 leading-[0.9]`}>
-              Why Save With <br/><span className="text-blue-200">Denipitiya West?</span>
-            </h2>
-            <div className="grid sm:grid-cols-2 gap-8 relative z-10">
-              {t.features.map((f, i) => (
-                <div key={i} className="group">
-                  <div className="w-10 h-10 bg-white/10 rounded-xl flex items-center justify-center mb-4 group-hover:bg-white group-hover:text-blue-600 transition-all">
-                    <CheckCircle2 size={20} />
+
+            {loading ? (
+              <div className="flex flex-col items-center justify-center gap-5 py-28">
+                <Loader2 className="animate-spin text-blue-600" size={38} strokeWidth={1.6} />
+                <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-slate-400">
+                  Accessing live rates
+                </p>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-4">
+                {fdRates.map((rate, idx) => {
+                  const accent = accents[idx % accents.length];
+
+                  return (
+                    <motion.div
+                      key={rate.id}
+                      initial={{ opacity: 0, y: 24 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true, amount: 0.2 }}
+                      transition={{ delay: idx * 0.07 }}
+                      whileHover={{ y: -6 }}
+                      className={`group relative overflow-hidden rounded-[1.8rem] border p-6 backdrop-blur-xl transition-all duration-500 md:p-7 ${
+                        rate.is_popular
+                          ? 'border-blue-500/30 bg-slate-950 text-white shadow-[0_28px_80px_-35px_rgba(37,99,235,0.45)] dark:bg-blue-600/15'
+                          : 'border-slate-200/80 bg-white/78 shadow-[0_18px_55px_-30px_rgba(15,23,42,0.25)] hover:shadow-[0_25px_80px_-35px_rgba(37,99,235,0.25)] dark:border-white/10 dark:bg-white/[0.04]'
+                      }`}
+                    >
+                      <div className={`absolute inset-x-0 top-0 h-24 bg-gradient-to-b ${accent.glow} opacity-70`} />
+
+                      {rate.is_popular && (
+                        <div className="absolute right-5 top-5 rounded-full border border-blue-400/20 bg-blue-500/15 px-3 py-1.5 text-[8px] font-bold uppercase tracking-[0.16em] text-blue-300">
+                          {t.popular}
+                        </div>
+                      )}
+
+                      <div className="relative z-10">
+                        <div className={`mb-6 flex h-12 w-12 items-center justify-center rounded-2xl ${accent.soft} ${accent.text}`}>
+                          <CalendarDays size={22} />
+                        </div>
+
+                        <p className={`text-[9px] font-bold uppercase tracking-[0.18em] ${rate.is_popular ? 'text-slate-400' : 'text-slate-400'}`}>
+                          {t.periodLabel}
+                        </p>
+
+                        <h3 className={`${isTamil ? 'text-xl' : 'text-2xl'} mt-2 font-extrabold tracking-tight ${rate.is_popular ? 'text-white' : 'text-slate-950 dark:text-white'}`}>
+                          {rate.period}
+                        </h3>
+
+                        <div className="my-7">
+                          <div className="flex items-end gap-2">
+                            <span className={`text-5xl font-extrabold tracking-[-0.055em] ${rate.is_popular ? 'text-white' : accent.text}`}>
+                              {rate.rate}
+                            </span>
+                            <span className={`mb-1 text-sm font-bold ${rate.is_popular ? 'text-blue-300' : accent.text}`}>
+                              %
+                            </span>
+                          </div>
+
+                          <p className={`mt-2 text-[10px] font-semibold uppercase tracking-[0.16em] ${rate.is_popular ? 'text-slate-400' : 'text-slate-500 dark:text-slate-400'}`}>
+                            {t.perAnnum}
+                          </p>
+                        </div>
+
+                        <div className={`border-t pt-5 ${rate.is_popular ? 'border-white/10' : 'border-slate-200/80 dark:border-white/10'}`}>
+                          <p className={`text-[9px] font-bold uppercase tracking-[0.16em] ${rate.is_popular ? 'text-slate-500' : 'text-slate-400'}`}>
+                            {t.minLabel}
+                          </p>
+
+                          <p className={`mt-2 text-base font-extrabold ${rate.is_popular ? 'text-white' : 'text-slate-900 dark:text-white'}`}>
+                            {rate.min_amount}
+                          </p>
+                        </div>
+                      </div>
+                    </motion.div>
+                  );
+                })}
+              </div>
+            )}
+          </div>
+        </section>
+
+        {/* BENEFITS */}
+        <section className="px-5 pb-24 md:px-8">
+          <div className="mx-auto max-w-7xl">
+            <div className="mb-8 text-center">
+              <h2 className={`${isTamil ? 'text-2xl md:text-3xl' : 'text-3xl md:text-4xl'} font-extrabold tracking-[-0.04em]`}>
+                {t.whyTitle}
+              </h2>
+              <p className="mt-3 text-sm font-medium text-slate-500 dark:text-slate-400">
+                {t.whySub}
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
+              {t.features.map((f, i) => {
+                const icons = [
+                  <Coins size={22} />,
+                  <CalendarDays size={22} />,
+                  <ShieldCheck size={22} />,
+                  <RefreshCw size={22} />
+                ];
+
+                const tones = [
+                  'bg-blue-500/10 text-blue-600 dark:text-blue-400',
+                  'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400',
+                  'bg-violet-500/10 text-violet-600 dark:text-violet-400',
+                  'bg-amber-500/10 text-amber-600 dark:text-amber-400'
+                ];
+
+                return (
+                  <motion.div
+                    key={i}
+                    whileHover={{ y: -5 }}
+                    className="rounded-[1.5rem] border border-slate-200/80 bg-white/75 p-5 shadow-sm backdrop-blur-xl transition-all dark:border-white/10 dark:bg-white/[0.035]"
+                  >
+                    <div className="flex items-start gap-4">
+                      <div className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-xl ${tones[i]}`}>
+                        {icons[i]}
+                      </div>
+
+                      <div>
+                        <h4 className="text-sm font-extrabold tracking-tight">
+                          {f.t}
+                        </h4>
+                        <p className="mt-1.5 text-xs font-medium leading-5 text-slate-500 dark:text-slate-400">
+                          {f.d}
+                        </p>
+                      </div>
+                    </div>
+                  </motion.div>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+
+        {/* CTA */}
+        <section className="px-5 pb-32 md:px-8 md:pb-40">
+          <div className="mx-auto max-w-7xl">
+            <div className="relative overflow-hidden rounded-[2rem] border border-slate-800 bg-[#07111f] p-7 shadow-2xl dark:border-white/10 dark:bg-[#020914] md:p-10">
+              <div className="pointer-events-none absolute inset-0">
+                <div className="absolute -left-20 -top-20 h-64 w-64 rounded-full bg-blue-500/10 blur-[90px]" />
+                <div className="absolute -bottom-24 right-0 h-72 w-72 rounded-full bg-emerald-500/10 blur-[100px]" />
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.04)_1px,transparent_1px)] [background-size:26px_26px]" />
+              </div>
+
+              <div className="relative z-10 grid items-center gap-8 lg:grid-cols-[1fr_auto]">
+                <div>
+                  <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-2xl bg-blue-500/10 text-blue-400">
+                    <Info size={23} />
                   </div>
-                  <h4 className={`${isTamil ? 'text-[11px]' : 'text-xs'} font-black uppercase italic tracking-widest mb-2`}>{f.t}</h4>
-                  <p className="text-blue-100/80 text-[11px] leading-relaxed">{f.d}</p>
+
+                  <h3 className={`${isTamil ? 'text-2xl md:text-3xl' : 'text-3xl md:text-4xl'} font-extrabold tracking-[-0.04em] text-white`}>
+                    {t.readyTitle}
+                  </h3>
+
+                  <p className="mt-3 max-w-xl text-sm font-medium leading-6 text-slate-400">
+                    {t.readySub}
+                  </p>
                 </div>
-              ))}
-            </div>
-          </motion.div>
 
-          <motion.div 
-            whileHover={{ scale: 1.01 }}
-            className="bg-white dark:bg-slate-900 border-4 border-slate-50 dark:border-white/5 rounded-[4rem] p-12 md:p-16 flex flex-col justify-between shadow-xl shadow-slate-200/50 dark:shadow-none"
-          >
-            <div className="flex items-start gap-6 mb-12">
-              <div className="w-16 h-16 bg-blue-50 dark:bg-blue-900/30 rounded-3xl flex items-center justify-center text-blue-600">
-                 <Info size={32} />
+                <button className="inline-flex w-full items-center justify-center gap-3 rounded-xl bg-white px-6 py-4 text-[11px] font-bold uppercase tracking-[0.15em] text-slate-950 transition-all hover:bg-blue-600 hover:text-white sm:w-auto">
+                  {t.ctaBtn}
+                  <ArrowUpRight size={18} />
+                </button>
               </div>
-              <div>
-                <h3 className={`${isTamil ? 'text-xl' : 'text-2xl'} font-black italic uppercase text-slate-800 dark:text-white tracking-tighter mb-2`}>Ready to start?</h3>
-                <p className="text-slate-500 dark:text-slate-400 text-sm font-medium">Talk to our experts today.</p>
-              </div>
-            </div>
-            <div className="space-y-6">
-              <button className="w-full bg-slate-900 dark:bg-blue-600 text-white py-6 rounded-3xl font-black uppercase text-[11px] tracking-[0.2em] hover:bg-blue-600 transition-all flex items-center justify-center gap-3 shadow-lg active:scale-95">
-                  {t.ctaBtn} <ArrowUpRight size={18} />
-              </button>
-              <div className="flex justify-center gap-4 text-[9px] font-black text-slate-300 dark:text-slate-600 uppercase tracking-widest">
-                <span>• Trusted since 1987</span>
-                <span>• Central Bank Regulated</span>
-              </div>
-            </div>
-          </motion.div>
-        </div>
 
+              <div className="relative z-10 mt-8 flex flex-wrap gap-3 border-t border-white/10 pt-6">
+                <span className="inline-flex items-center gap-2 rounded-full bg-white/[0.04] px-3 py-2 text-[9px] font-semibold text-slate-400">
+                  <BadgeCheck size={14} className="text-emerald-400" />
+                  Trusted Savings
+                </span>
+
+                <span className="inline-flex items-center gap-2 rounded-full bg-white/[0.04] px-3 py-2 text-[9px] font-semibold text-slate-400">
+                  <CheckCircle2 size={14} className="text-blue-400" />
+                  Clear Rates
+                </span>
+              </div>
+            </div>
+          </div>
+        </section>
       </div>
     </div>
   );
