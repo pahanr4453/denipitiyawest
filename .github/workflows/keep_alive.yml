@@ -2,16 +2,12 @@ name: Keep Supabase Alive
 
 on:
   schedule:
-    # සෑම දිනකම රාත්‍රී 12:00 ට (UTC) automatic run වේ
     - cron: '0 0 * * *'
-  workflow_dispatch: # GitHub interface එකෙන් manual run කිරීමට
+  workflow_dispatch:
 
 jobs:
   ping-supabase:
     runs-on: ubuntu-latest
     steps:
       - name: Send Ping to Supabase Database
-        run: |
-          curl -i -X GET 'https://xjyexrodganxrewohdfi.supabase.co/rest/v1/fd_rates?select=count' \
-            -H "apikey: ${{ secrets.SUPABASE_ANON_KEY }}" \
-            -H "Authorization: Bearer ${{ secrets.SUPABASE_ANON_KEY }}"
+        run: curl -i -X GET "https://xjyexrodganxrewohdfi.supabase.co/rest/v1/fd_rates?select=count" -H "apikey:${{ secrets.SUPABASE_ANON_KEY }}" -H "Authorization:Bearer ${{ secrets.SUPABASE_ANON_KEY }}"
