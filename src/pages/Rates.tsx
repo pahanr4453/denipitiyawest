@@ -8,7 +8,8 @@ import {
   Coins,
   RefreshCw,
   BadgeCheck,
-  Sparkles
+  Sparkles,
+  Star
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { supabase } from '../lib/supabase';
@@ -322,7 +323,7 @@ export default function Rates({
                 </p>
               </div>
             ) : (
-              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
+              <div className="mx-auto grid max-w-6xl grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
                 {fdRates.map((rate, idx) => {
                   const tone = tones[idx % tones.length];
 
@@ -334,19 +335,21 @@ export default function Rates({
                       viewport={{ once: true }}
                       transition={{ delay: idx * 0.06 }}
                       whileHover={{ y: -6 }}
-                      className={`group relative flex min-h-[360px] flex-col overflow-hidden rounded-[1.55rem] border p-5 shadow-[0_16px_48px_-28px_rgba(15,23,42,0.30)] backdrop-blur-xl transition-all duration-400 ${
-                        rate.is_popular
-                          ? 'border-emerald-500/35 bg-emerald-50/80 ring-1 ring-emerald-500/15 dark:bg-emerald-500/[0.07]'
-                          : `border-slate-200/80 bg-white/78 ring-1 ${tone.ring} dark:border-white/10 dark:bg-white/[0.035]`
-                      }`}
+                      className="group relative pt-4"
                     >
                       {rate.is_popular && (
-                        <div className="absolute left-1/2 top-0 -translate-x-1/2 -translate-y-1/2 rounded-full bg-emerald-600 px-3 py-1.5 text-[8px] font-bold uppercase tracking-[0.12em] text-white shadow-lg">
-                          ★ {t.popular}
+                        <div className="absolute left-1/2 top-0 z-30 flex -translate-x-1/2 items-center gap-1.5 whitespace-nowrap rounded-full border border-emerald-400/30 bg-emerald-600 px-4 py-2 text-[9px] font-extrabold uppercase tracking-[0.12em] text-white shadow-[0_10px_30px_-10px_rgba(5,150,105,0.8)]">
+                          <Star size={12} fill="currentColor" />
+                          <span>{t.popular}</span>
                         </div>
                       )}
 
-                      <div className="flex items-start justify-between gap-4">
+                      <div className={`relative flex min-h-[390px] flex-col overflow-hidden rounded-[1.75rem] border p-6 shadow-[0_18px_55px_-28px_rgba(15,23,42,0.32)] backdrop-blur-xl transition-all duration-400 md:p-7 ${
+                        rate.is_popular
+                          ? 'border-emerald-500/40 bg-emerald-50/85 ring-2 ring-emerald-500/15 dark:bg-emerald-500/[0.075]'
+                          : `border-slate-200/80 bg-white/82 ring-1 ${tone.ring} dark:border-white/10 dark:bg-white/[0.04]`
+                      }`}>
+                        <div className="flex items-start justify-between gap-4">
                         <div>
                           <p className="text-[9px] font-bold uppercase tracking-[0.16em] text-slate-400">
                             {t.periodLabel}
@@ -389,17 +392,18 @@ export default function Rates({
                         </p>
                       </div>
 
-                      <div className="mt-auto pt-6">
-                        <button
-                          className={`flex w-full items-center justify-center gap-2 rounded-xl border bg-transparent px-4 py-3 text-[10px] font-bold uppercase tracking-[0.13em] transition-all duration-300 ${
-                            rate.is_popular
-                              ? 'border-emerald-600 bg-emerald-600 text-white hover:bg-emerald-500'
-                              : tone.button
-                          }`}
-                        >
-                          {t.ctaBtn}
-                          <ArrowRight size={15} />
-                        </button>
+                        <div className="mt-auto pt-7">
+                          <button
+                            className={`flex w-full items-center justify-center gap-2 rounded-xl border bg-transparent px-4 py-3.5 text-[10px] font-bold uppercase tracking-[0.13em] transition-all duration-300 ${
+                              rate.is_popular
+                                ? 'border-emerald-600 bg-emerald-600 text-white shadow-lg shadow-emerald-600/20 hover:bg-emerald-500'
+                                : tone.button
+                            }`}
+                          >
+                            {t.ctaBtn}
+                            <ArrowRight size={15} />
+                          </button>
+                        </div>
                       </div>
                     </motion.div>
                   );
