@@ -211,63 +211,232 @@ export default function App() {
       
       <AnimatePresence mode="wait">
         {isLoading ? (
-          /* --- FULL SCREEN PREMIUM LOADER (UNTOUCHED & REFINED) --- */
-          <motion.div 
+          /* --- PREMIUM WELCOME / STARTUP SCREEN --- */
+          <motion.div
             key="loader"
             initial={{ opacity: 1 }}
-            exit={{ opacity: 0, scale: 1.1, filter: "blur(20px)" }}
-            transition={{ duration: 0.8, ease: "easeInOut" }}
-            className="fixed inset-0 z-[99999] flex flex-col items-center justify-center bg-[#020617]"
+            exit={{
+              opacity: 0,
+              scale: 1.03,
+              filter: "blur(18px)"
+            }}
+            transition={{
+              duration: 0.85,
+              ease: [0.22, 1, 0.36, 1]
+            }}
+            className="fixed inset-0 z-[99999] overflow-hidden bg-[#020817] text-white"
           >
-            <div className="relative flex flex-col items-center">
-              <motion.div 
-                animate={{ rotate: 360 }}
-                transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
-                className="absolute w-[200px] h-[200px] border border-green-500/10 rounded-full"
+            {/* Ambient background */}
+            <div className="absolute inset-0 pointer-events-none">
+              <motion.div
+                animate={{
+                  x: [0, 80, 15, 0],
+                  y: [0, 35, 85, 0],
+                  scale: [1, 1.08, 0.96, 1]
+                }}
+                transition={{
+                  duration: 16,
+                  repeat: Infinity,
+                  ease: "easeInOut"
+                }}
+                className="absolute -top-28 -left-28 h-[360px] w-[360px] rounded-full bg-green-500/12 blur-[110px]"
               />
-              <motion.div 
-                animate={{ rotate: -360 }}
-                transition={{ duration: 12, repeat: Infinity, ease: "linear" }}
-                className="absolute w-[240px] h-[240px] border border-white/5 rounded-full"
-              />
-              
-              <motion.div 
-                initial={{ opacity: 0, scale: 0.5 }}
-                animate={{ opacity: 1, scale: 1 }}
-                className="relative z-10 mb-10"
-              >
-                <div className="absolute inset-0 bg-green-500/20 blur-[40px] rounded-full animate-pulse" />
-                <img 
-                  src="/sf.png" 
-                  className="w-32 h-auto relative z-20 drop-shadow-[0_0_30px_rgba(34,197,94,0.3)]" 
-                  alt="Logo"
-                />
-              </motion.div>
 
-              <div className="text-center relative z-10">
-                <motion.h2 
-                  initial={{ y: 20, opacity: 0 }}
-                  animate={{ y: 0, opacity: 1 }}
-                  transition={{ delay: 0.2 }}
-                  className="text-2xl font-black tracking-[0.3em] text-white uppercase italic"
-                >
-                  DENIPITIYA WEST <span className="text-green-500">SANASA</span>
-                </motion.h2>
-                
-                <motion.div 
-                  initial={{ width: 0 }}
-                  animate={{ width: "100%" }}
-                  className="h-[1px] bg-gradient-to-r from-transparent via-green-500 to-transparent my-4"
-                />
-                
-                <motion.p 
-                  animate={{ opacity: [0.3, 1, 0.3] }}
-                  transition={{ duration: 2, repeat: Infinity }}
-                  className="text-[10px] font-bold tracking-[0.6em] text-green-500 uppercase"
-                >
-                  Authenticating Secure Session
-                </motion.p>
-              </div>
+              <motion.div
+                animate={{
+                  x: [0, -70, -15, 0],
+                  y: [0, 70, -20, 0],
+                  scale: [1, 0.95, 1.08, 1]
+                }}
+                transition={{
+                  duration: 20,
+                  repeat: Infinity,
+                  ease: "easeInOut"
+                }}
+                className="absolute top-[18%] -right-28 h-[430px] w-[430px] rounded-full bg-cyan-500/10 blur-[130px]"
+              />
+
+              <motion.div
+                animate={{
+                  x: [0, 55, -35, 0],
+                  y: [0, -40, 25, 0]
+                }}
+                transition={{
+                  duration: 24,
+                  repeat: Infinity,
+                  ease: "easeInOut"
+                }}
+                className="absolute -bottom-36 left-[30%] h-[470px] w-[470px] rounded-full bg-emerald-500/10 blur-[140px]"
+              />
+
+              <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.04)_1px,transparent_1px)] [background-size:28px_28px]" />
+
+              <motion.div
+                animate={{ x: [0, -35, 0] }}
+                transition={{
+                  duration: 13,
+                  repeat: Infinity,
+                  ease: "easeInOut"
+                }}
+                className="absolute top-[18%] left-1/2 h-[180px] w-[900px] -translate-x-1/2 opacity-50"
+              >
+                <div className="absolute inset-x-0 top-6 h-px rotate-[-3deg] bg-gradient-to-r from-transparent via-green-400/55 to-transparent" />
+                <div className="absolute inset-x-0 top-16 h-px rotate-[2deg] bg-gradient-to-r from-transparent via-cyan-400/35 to-transparent" />
+                <div className="absolute inset-x-0 top-28 h-px rotate-[-1deg] bg-gradient-to-r from-transparent via-emerald-400/30 to-transparent" />
+              </motion.div>
+            </div>
+
+            <div className="relative z-10 flex min-h-screen items-center justify-center px-5 py-10">
+              <motion.div
+                initial={{ opacity: 0, y: 22, scale: 0.96 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                transition={{
+                  duration: 0.75,
+                  ease: [0.22, 1, 0.36, 1]
+                }}
+                className="relative w-full max-w-xl overflow-hidden rounded-[2rem] border border-white/10 bg-white/[0.045] p-6 shadow-[0_35px_120px_-30px_rgba(0,0,0,0.85)] backdrop-blur-2xl sm:p-8 md:rounded-[2.5rem] md:p-10"
+              >
+                <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-green-400/80 to-transparent" />
+                <div className="absolute -right-16 -top-16 h-44 w-44 rounded-full bg-green-500/10 blur-[70px]" />
+
+                <div className="relative z-10 flex flex-col items-center text-center">
+                  {/* Status badge */}
+                  <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.1 }}
+                    className="mb-7 inline-flex items-center gap-2 rounded-full border border-green-400/15 bg-green-500/10 px-4 py-2 text-[9px] font-bold uppercase tracking-[0.22em] text-green-300"
+                  >
+                    <span className="relative flex h-2 w-2">
+                      <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 opacity-60" />
+                      <span className="relative inline-flex h-2 w-2 rounded-full bg-green-400" />
+                    </span>
+                    Secure Banking Portal
+                  </motion.div>
+
+                  {/* Logo */}
+                  <div className="relative mb-7 flex h-28 w-28 items-center justify-center md:h-32 md:w-32">
+                    <motion.div
+                      animate={{ rotate: 360 }}
+                      transition={{
+                        duration: 10,
+                        repeat: Infinity,
+                        ease: "linear"
+                      }}
+                      className="absolute inset-[-10px] rounded-full border border-dashed border-green-400/20"
+                    />
+
+                    <motion.div
+                      animate={{ rotate: -360 }}
+                      transition={{
+                        duration: 14,
+                        repeat: Infinity,
+                        ease: "linear"
+                      }}
+                      className="absolute inset-[-22px] rounded-full border border-white/[0.05]"
+                    />
+
+                    <div className="absolute inset-0 rounded-[2rem] bg-green-500/10 blur-2xl" />
+
+                    <motion.img
+                      initial={{ opacity: 0, scale: 0.75 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{
+                        delay: 0.12,
+                        duration: 0.6,
+                        ease: [0.22, 1, 0.36, 1]
+                      }}
+                      src="/sf.png"
+                      className="relative z-10 w-24 h-auto drop-shadow-[0_0_30px_rgba(34,197,94,0.32)] md:w-28"
+                      alt="Denipitiya West Sanasa Logo"
+                    />
+                  </div>
+
+                  {/* Welcome copy */}
+                  <motion.p
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.18 }}
+                    className="mb-3 text-[10px] font-bold uppercase tracking-[0.32em] text-green-400"
+                  >
+                    Welcome to
+                  </motion.p>
+
+                  <motion.h2
+                    initial={{ opacity: 0, y: 14 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.23 }}
+                    className="max-w-md text-3xl font-extrabold leading-[1.05] tracking-[-0.045em] text-white sm:text-4xl"
+                  >
+                    Denipitiya West
+                    <span className="block text-green-400">SANASA</span>
+                  </motion.h2>
+
+                  <motion.p
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.32 }}
+                    className="mt-4 max-w-sm text-xs font-medium leading-6 text-slate-400 sm:text-sm"
+                  >
+                    Trusted community banking, designed for a secure and better financial future.
+                  </motion.p>
+
+                  {/* Loading progress */}
+                  <div className="mt-8 w-full max-w-sm">
+                    <div className="mb-3 flex items-center justify-between text-[9px] font-semibold uppercase tracking-[0.16em] text-slate-500">
+                      <span>Starting secure session</span>
+                      <span className="text-green-400">Protected</span>
+                    </div>
+
+                    <div className="h-1.5 overflow-hidden rounded-full bg-white/[0.06]">
+                      <motion.div
+                        initial={{ width: "0%" }}
+                        animate={{ width: "100%" }}
+                        transition={{
+                          duration: 2.7,
+                          ease: [0.22, 1, 0.36, 1]
+                        }}
+                        className="h-full rounded-full bg-gradient-to-r from-green-600 via-emerald-400 to-cyan-400 shadow-[0_0_18px_rgba(52,211,153,0.45)]"
+                      />
+                    </div>
+                  </div>
+
+                  {/* Trust mini cards */}
+                  <div className="mt-7 grid w-full grid-cols-2 gap-3">
+                    <div className="rounded-2xl border border-white/[0.07] bg-black/15 p-3.5 text-left">
+                      <div className="flex items-center gap-2.5">
+                        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-green-500/10 text-green-400">
+                          <ShieldCheck size={18} />
+                        </div>
+                        <div>
+                          <p className="text-[10px] font-bold text-white">Secure Access</p>
+                          <p className="mt-0.5 text-[8px] font-medium text-slate-500">Encrypted session</p>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="rounded-2xl border border-white/[0.07] bg-black/15 p-3.5 text-left">
+                      <div className="flex items-center gap-2.5">
+                        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-cyan-500/10 text-cyan-400">
+                          <Activity size={18} />
+                        </div>
+                        <div>
+                          <p className="text-[10px] font-bold text-white">System Online</p>
+                          <p className="mt-0.5 text-[8px] font-medium text-slate-500">Services available</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <motion.p
+                    animate={{ opacity: [0.35, 1, 0.35] }}
+                    transition={{ duration: 1.8, repeat: Infinity }}
+                    className="mt-6 text-[8px] font-bold uppercase tracking-[0.24em] text-slate-600"
+                  >
+                    Please wait a moment
+                  </motion.p>
+                </div>
+              </motion.div>
             </div>
           </motion.div>
         ) : (
